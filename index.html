@@ -158,7 +158,7 @@
                     <p>+1 SKURCOIN/сек</p>
                     <p id="autoClickerLevel">Уровень: 0</p>
                 </div>
-                <button id="buyAutoClicker">Цена: 150</button>
+                <button id="buyAutoClicker">Цена: 270</button>
             </div>
             <div class="upgrade">
                 <div>
@@ -166,7 +166,7 @@
                     <p>+1 к множителю</p>
                     <p id="clickMultiplierLevel">Уровень: 0</p>
                 </div>
-                <button id="buyClickMultiplier">Цена: 200</button>
+                <button id="buyClickMultiplier">Цена: 320</button>
             </div>
             <div class="upgrade">
                 <div>
@@ -174,7 +174,7 @@
                     <p>+5 SKURCOIN/клик</p>
                     <p id="megaClickerLevel">Уровень: 0</p>
                 </div>
-                <button id="buyMegaClicker">Цена: 350</button>
+                <button id="buyMegaClicker">Цена: 470</button>
             </div>
         </div>
     </div>
@@ -291,15 +291,15 @@
             });
 
             document.getElementById('buyAutoClicker').addEventListener('click', () => 
-                buyUpgrade('autoClicker', 10));
+                buyUpgrade('autoClicker', 270, 200));
             document.getElementById('buyClickMultiplier').addEventListener('click', () => 
-                buyUpgrade('clickMultiplier', 50, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel));
+                buyUpgrade('clickMultiplier', 320, 200, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel));
             document.getElementById('buyMegaClicker').addEventListener('click', () => 
-                buyUpgrade('megaClicker', 100));
+                buyUpgrade('megaClicker', 470, 200));
         }
 
-        function buyUpgrade(type, baseCost, onBuy) {
-            const cost = baseCost * (gameState[`${type}Level`] + 1);
+        function buyUpgrade(type, baseCost, costIncrease, onBuy) {
+            const cost = baseCost + (gameState[`${type}Level`] * costIncrease);
             if (gameState.coins >= cost) {
                 gameState.coins -= cost;
                 gameState[`${type}Level`]++;
@@ -324,20 +324,21 @@
             document.getElementById('clickMultiplierLevel').textContent = `Уровень: ${gameState.clickMultiplierLevel}`;
             document.getElementById('megaClickerLevel').textContent = `Уровень: ${gameState.megaClickerLevel}`;
             
-            document.getElementById('buyAutoClicker').textContent = `Цена: ${10 * (gameState.autoClickerLevel + 1)}`;
-            document.getElementById('buyClickMultiplier').textContent = `Цена: ${50 * (gameState.clickMultiplierLevel + 1)}`;
-            document.getElementById('buyMegaClicker').textContent = `Цена: ${100 * (gameState.megaClickerLevel + 1)}`;
+            // Обновление цен с учетом новой формулы
+            document.getElementById('buyAutoClicker').textContent = `Цена: ${270 + (gameState.autoClickerLevel * 200)}`;
+            document.getElementById('buyClickMultiplier').textContent = `Цена: ${320 + (gameState.clickMultiplierLevel * 200)}`;
+            document.getElementById('buyMegaClicker').textContent = `Цена: ${470 + (gameState.megaClickerLevel * 200)}`;
             
             updateUpgradeButtons();
         }
 
         function updateUpgradeButtons() {
             document.getElementById('buyAutoClicker').disabled = 
-                gameState.coins < 10 * (gameState.autoClickerLevel + 1);
+                gameState.coins < (270 + (gameState.autoClickerLevel * 200));
             document.getElementById('buyClickMultiplier').disabled = 
-                gameState.coins < 50 * (gameState.clickMultiplierLevel + 1);
+                gameState.coins < (320 + (gameState.clickMultiplierLevel * 200));
             document.getElementById('buyMegaClicker').disabled = 
-                gameState.coins < 100 * (gameState.megaClickerLevel + 1);
+                gameState.coins < (470 + (gameState.megaClickerLevel * 200));
         }
 
         // Сохранение/загрузка
