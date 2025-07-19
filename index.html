@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKURCOIN Кликер</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #16213e;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: #f9c74f;
+            margin-bottom: 5px;
+        }
+        .coin-display {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #f9c74f;
+        }
+        .clicker {
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.1s;
+            background-image: url('https://i.ibb.co/S7ZJcBQB/Untitled36-20250719163136.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
+            border: 4px solid #f9c74f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .clicker:active {
+            transform: scale(0.95);
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .stat {
+            background-color: #0f3460;
+            padding: 10px;
+            border-radius: 10px;
+            width: 45%;
+        }
+        .upgrades {
+            margin-top: 20px;
+        }
+        .upgrade {
+            background-color: #0f3460;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff6b81;
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        .cps {
+            font-size: 16px;
+            color: #a5a5a5;
+            margin-top: 5px;
+        }
+        .coin-effect {
+            position: absolute;
+            color: #f9c74f;
+            font-weight: bold;
+            animation: floatUp 1s forwards;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .referral-section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #0f3460;
+            border-radius: 10px;
+        }
+        .referral-link {
+            word-break: break-all;
+            margin: 10px 0;
+            padding: 8px;
+            background-color: #16213e;
+            border-radius: 5px;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SKURCOIN Кликер</h1>
+        <div class="coin-display" id="coins">0 SKURCOIN</div>
+        <div class="cps" id="cps">0 SKURCOIN/сек</div>
+        
+        <div class="clicker" id="clicker"></div>
+        
+        <div class="referral-section">
+            <h3>Реферальная система</h3>
+            <p>Пригласите друзей и получите x3 множитель навсегда!</p>
+            <div class="referral-link" id="referralLink">Генерация ссылки...</div>
+            <button id="copyReferralBtn">Копировать ссылку</button>
+            <p id="referralStatus"></p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <h3>Клики</h3>
+                <div id="clicks">0</div>
+            </div>
+            <div class="stat">
+                <h3>Множитель</h3>
+                <div id="multiplier">x1</div>
+            </div>
+        </div>
+        
+        <div class="upgrades">
+            <h2>Улучшения</h2>
+            <div class="upgrade">
+                <div>
+                    <h3>Автокликер</h3>
+                    <p>+1 SKURCOIN/сек</p>
+                    <p id="autoClickerLevel">Уровень: 0</p>
+                </div>
+                <button id="buyAutoClicker">Цена: 10</button>
+            </div>
+            <div class="upgrade">
+                <div>
+                    <h3>Улучшенный клик</h3>
+                    <p>+1 к множителю</p>
+                    <p id="clickMultiplierLevel">Уровень: 0</p>
+                </div>
+                <button id="buyClickMultiplier">Цена: 50</button>
+            </div>
+            <div class="upgrade">
+                <div>
+                    <h3>Мега кликер</h3>
+                    <p>+5 SKURCOIN/клик</p>
+                    <p id="megaClickerLevel">Уровень: 0</p>
+                </div>
+                <button id="buyMegaClicker">Цена: 100</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация бота
+        const BOT_TOKEN = '8113087097:AAE6Fk19ESCGfFEc7xUfbKP3vkzmYvtQnoY';
+        const BOT_USERNAME = 'skurclickerbot';
+        const tg = window.Telegram.WebApp;
+
+        // Game state
+        let gameState = {
+            coins: 0,
+            clicks: 0,
+            baseMultiplier: 1,
+            bonusMultiplier: 1,
+            autoClickerLevel: 0,
+            clickMultiplierLevel: 0,
+            megaClickerLevel: 0,
+            hasReferralBonus: false,
+            referralCode: null,
+            referredBy: null
+        };
+
+        // Генератор кодов
+        function generateReferralCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            for (let i = 0; i < 8; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Инициализация
+        function initGame() {
+            if (!gameState.referralCode) {
+                gameState.referralCode = generateReferralCode();
+            }
+
+            // Обработка реферала
+            if (tg.initDataUnsafe?.start_param) {
+                handleReferral(tg.initDataUnsafe.start_param);
+            }
+
+            updateReferralLink();
+            loadProgress();
+            setupEventListeners();
+            updateDisplay();
+        }
+
+        // Обработка реферала
+        function handleReferral(refCode) {
+            if (refCode !== gameState.referralCode) {
+                gameState.referredBy = refCode;
+                applyReferralBonus();
+                notifyReferrer(refCode);
+            }
+        }
+
+        // Уведомление пригласившего
+        function notifyReferrer(refCode) {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    chat_id: refCode, // В реальном боте нужно связать код с ID
+                    text: `🎉 Новый реферал! Код: ${gameState.referralCode}`
+                })
+            }).catch(e => console.error('Ошибка уведомления:', e));
+        }
+
+        // Реферальные функции
+        function updateReferralLink() {
+            const link = `https://t.me/${BOT_USERNAME}?start=${gameState.referralCode}`;
+            document.getElementById('referralLink').textContent = link;
+            
+            document.getElementById('copyReferralBtn').addEventListener('click', () => {
+                navigator.clipboard.writeText(link);
+                const btn = document.getElementById('copyReferralBtn');
+                btn.textContent = 'Скопировано!';
+                setTimeout(() => btn.textContent = 'Копировать ссылку', 2000);
+            });
+        }
+
+        function applyReferralBonus() {
+            if (!gameState.hasReferralBonus) {
+                gameState.bonusMultiplier = 3;
+                gameState.hasReferralBonus = true;
+                document.getElementById('referralStatus').textContent = '✅ Вы получили x3 множитель!';
+                saveProgress();
+            }
+        }
+
+        // Игровой процесс
+        function setupEventListeners() {
+            document.getElementById('clicker').addEventListener('click', (e) => {
+                const value = (1 + gameState.megaClickerLevel * 5) * getMultiplier();
+                gameState.coins += value;
+                gameState.clicks++;
+                
+                // Эффект клика
+                const coin = document.createElement('div');
+                coin.className = 'coin-effect';
+                coin.textContent = `+${value}`;
+                const rect = e.target.getBoundingClientRect();
+                coin.style.left = `${e.clientX - rect.left}px`;
+                coin.style.top = `${e.clientY - rect.top}px`;
+                e.target.appendChild(coin);
+                setTimeout(() => coin.remove(), 1000);
+                
+                saveProgress();
+                updateDisplay();
+            });
+
+            document.getElementById('buyAutoClicker').addEventListener('click', () => 
+                buyUpgrade('autoClicker', 10));
+            document.getElementById('buyClickMultiplier').addEventListener('click', () => 
+                buyUpgrade('clickMultiplier', 50, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel));
+            document.getElementById('buyMegaClicker').addEventListener('click', () => 
+                buyUpgrade('megaClicker', 100));
+        }
+
+        function buyUpgrade(type, baseCost, onBuy) {
+            const cost = baseCost * (gameState[`${type}Level`] + 1);
+            if (gameState.coins >= cost) {
+                gameState.coins -= cost;
+                gameState[`${type}Level`]++;
+                if (onBuy) onBuy();
+                saveProgress();
+                updateDisplay();
+            }
+        }
+
+        // Вспомогательные функции
+        function getMultiplier() {
+            return gameState.baseMultiplier * gameState.bonusMultiplier;
+        }
+
+        function updateDisplay() {
+            document.getElementById('coins').textContent = `${Math.floor(gameState.coins)} SKURCOIN`;
+            document.getElementById('clicks').textContent = gameState.clicks;
+            document.getElementById('multiplier').textContent = `x${getMultiplier()}${gameState.hasReferralBonus ? ' (x3 реф)' : ''}`;
+            document.getElementById('cps').textContent = `${gameState.autoClickerLevel} SKURCOIN/сек`;
+            
+            document.getElementById('autoClickerLevel').textContent = `Уровень: ${gameState.autoClickerLevel}`;
+            document.getElementById('clickMultiplierLevel').textContent = `Уровень: ${gameState.clickMultiplierLevel}`;
+            document.getElementById('megaClickerLevel').textContent = `Уровень: ${gameState.megaClickerLevel}`;
+            
+            document.getElementById('buyAutoClicker').textContent = `Цена: ${10 * (gameState.autoClickerLevel + 1)}`;
+            document.getElementById('buyClickMultiplier').textContent = `Цена: ${50 * (gameState.clickMultiplierLevel + 1)}`;
+            document.getElementById('buyMegaClicker').textContent = `Цена: ${100 * (gameState.megaClickerLevel + 1)}`;
+            
+            updateUpgradeButtons();
+        }
+
+        function updateUpgradeButtons() {
+            document.getElementById('buyAutoClicker').disabled = 
+                gameState.coins < 10 * (gameState.autoClickerLevel + 1);
+            document.getElementById('buyClickMultiplier').disabled = 
+                gameState.coins < 50 * (gameState.clickMultiplierLevel + 1);
+            document.getElementById('buyMegaClicker').disabled = 
+                gameState.coins < 100 * (gameState.megaClickerLevel + 1);
+        }
+
+        // Сохранение/загрузка
+        function saveProgress() {
+            localStorage.setItem(`skurcoin_${gameState.referralCode}`, JSON.stringify(gameState));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem(`skurcoin_${gameState.referralCode}`);
+            if (saved) {
+                Object.assign(gameState, JSON.parse(saved));
+                if (gameState.hasReferralBonus) {
+                    document.getElementById('referralStatus').textContent = '✅ У вас есть x3 множитель';
+                }
+            }
+        }
+
+        // Автокликер
+        setInterval(() => {
+            if (gameState.autoClickerLevel > 0) {
+                gameState.coins += gameState.autoClickerLevel * getMultiplier();
+                saveProgress();
+                updateDisplay();
+            }
+        }, 1000);
+
+        // Запуск
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
