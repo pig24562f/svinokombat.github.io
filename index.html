@@ -14,6 +14,8 @@
             --dark: #2D3436;
             --light: #F5F6FA;
             --success: #00B894;
+            --warning: #FDCB6E;
+            --danger: #E17055;
         }
         
         * {
@@ -255,6 +257,20 @@
             transform: scale(0.95);
         }
         
+        .premium-upgrade {
+            border: 1px solid var(--warning);
+            background: rgba(253, 203, 110, 0.05);
+        }
+        
+        .premium-upgrade button {
+            background: linear-gradient(to right, var(--warning), var(--danger));
+            box-shadow: 0 4px 10px rgba(253, 203, 110, 0.4);
+        }
+        
+        .premium-upgrade:hover {
+            background: rgba(253, 203, 110, 0.1);
+        }
+        
         .referral-section {
             background: rgba(0, 206, 255, 0.1);
             padding: 15px;
@@ -332,6 +348,11 @@
             100% { opacity: 0; transform: translateY(-50px); }
         }
         
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
         /* Эффект частиц */
         .particles {
             position: fixed;
@@ -363,6 +384,37 @@
                 margin-top: 10px;
                 width: 100%;
             }
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
@@ -396,31 +448,124 @@
             <p id="referralStatus"></p>
         </div>
 
-        <div class="upgrades">
-            <h2>⚡ Улучшения</h2>
-            <div class="upgrade">
-                <div>
-                    <h3>Автокликер</h3>
-                    <p>+1 SKURCOIN/сек</p>
-                    <p id="autoClickerLevel">Уровень: 0</p>
+        <div class="tabs">
+            <button class="tab-button active" data-tab="basic">Базовые</button>
+            <button class="tab-button" data-tab="premium">Премиум</button>
+            <button class="tab-button" data-tab="property">Недвижимость</button>
+        </div>
+
+        <div class="tab-content active" id="basic-tab">
+            <div class="upgrades">
+                <h2>⚡ Улучшения</h2>
+                <div class="upgrade">
+                    <div>
+                        <h3>Автокликер</h3>
+                        <p>+1 SKURCOIN/сек</p>
+                        <p id="autoClickerLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyAutoClicker">Купить: 270</button>
                 </div>
-                <button id="buyAutoClicker">Купить: 270</button>
+                <div class="upgrade">
+                    <div>
+                        <h3>Улучшенный клик</h3>
+                        <p>+1 к множителю</p>
+                        <p id="clickMultiplierLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyClickMultiplier">Купить: 320</button>
+                </div>
+                <div class="upgrade">
+                    <div>
+                        <h3>Мега кликер</h3>
+                        <p>+5 SKURCOIN/клик</p>
+                        <p id="megaClickerLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyMegaClicker">Купить: 470</button>
+                </div>
             </div>
-            <div class="upgrade">
-                <div>
-                    <h3>Улучшенный клик</h3>
-                    <p>+1 к множителю</p>
-                    <p id="clickMultiplierLevel">Уровень: 0</p>
+        </div>
+
+        <div class="tab-content" id="premium-tab">
+            <div class="upgrades">
+                <h2>💎 Премиум</h2>
+                <div class="upgrade premium-upgrade">
+                    <div>
+                        <h3>Золотой кликер</h3>
+                        <p>+10 SKURCOIN/клик</p>
+                        <p id="goldenClickerLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyGoldenClicker">Купить: 1,500</button>
                 </div>
-                <button id="buyClickMultiplier">Купить: 320</button>
+                <div class="upgrade premium-upgrade">
+                    <div>
+                        <h3>Алмазный множитель</h3>
+                        <p>+3 к множителю</p>
+                        <p id="diamondMultiplierLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyDiamondMultiplier">Купить: 2,500</button>
+                </div>
+                <div class="upgrade premium-upgrade">
+                    <div>
+                        <h3>Криптоферма</h3>
+                        <p>+50 SKURCOIN/сек</p>
+                        <p id="cryptoFarmLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyCryptoFarm">Купить: 5,000</button>
+                </div>
             </div>
-            <div class="upgrade">
-                <div>
-                    <h3>Мега кликер</h3>
-                    <p>+5 SKURCOIN/клик</p>
-                    <p id="megaClickerLevel">Уровень: 0</p>
+        </div>
+
+        <div class="tab-content" id="property-tab">
+            <div class="upgrades">
+                <h2>🏠 Недвижимость</h2>
+                <div class="upgrade">
+                    <div>
+                        <h3>Дом</h3>
+                        <p>Открывает новые улучшения</p>
+                        <p>Содержание: -5,000/5мин</p>
+                        <p id="houseStatus">Не куплено</p>
+                    </div>
+                    <button id="buyHouse">Купить: 50,000</button>
                 </div>
-                <button id="buyMegaClicker">Купить: 470</button>
+                <div class="upgrade" id="clothingUpgrade" style="display: none;">
+                    <div>
+                        <h3>Одежда</h3>
+                        <p>+2 к множителю</p>
+                        <p id="clothingLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyClothing">Купить: 10,000</button>
+                </div>
+                <div class="upgrade" id="foodUpgrade" style="display: none;">
+                    <div>
+                        <h3>Еда</h3>
+                        <p>+5 SKURCOIN/сек</p>
+                        <p id="foodLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyFood">Купить: 15,000</button>
+                </div>
+                <div class="upgrade" id="interiorUpgrade" style="display: none;">
+                    <div>
+                        <h3>Интерьер</h3>
+                        <p>+20 SKURCOIN/клик</p>
+                        <p id="interiorLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyInterior">Купить: 25,000</button>
+                </div>
+                <div class="upgrade">
+                    <div>
+                        <h3>Машина</h3>
+                        <p>Открывает заправку</p>
+                        <p id="carStatus">Не куплено</p>
+                    </div>
+                    <button id="buyCar">Купить: 300,000</button>
+                </div>
+                <div class="upgrade" id="gasStationUpgrade" style="display: none;">
+                    <div>
+                        <h3>Заправка</h3>
+                        <p>+10,000 SKURCOIN/сек</p>
+                        <p id="gasStationLevel">Уровень: 0</p>
+                    </div>
+                    <button id="buyGasStation">Купить: 500,000</button>
+                </div>
             </div>
         </div>
     </div>
@@ -437,9 +582,19 @@
             autoClickerLevel: 0,
             clickMultiplierLevel: 0,
             megaClickerLevel: 0,
+            goldenClickerLevel: 0,
+            diamondMultiplierLevel: 0,
+            cryptoFarmLevel: 0,
+            hasHouse: false,
+            clothingLevel: 0,
+            foodLevel: 0,
+            interiorLevel: 0,
+            hasCar: false,
+            gasStationLevel: 0,
             hasReferralBonus: false,
             referredBy: null,
-            userId: null
+            userId: null,
+            lastHouseDeduction: Date.now()
         };
 
         function initGame() {
@@ -455,6 +610,75 @@
             setupEventListeners();
             updateDisplay();
             initParticles();
+            setupTabs();
+            
+            // Запускаем игровые интервалы
+            setInterval(gameLoop, 1000);
+            setInterval(houseDeduction, 5 * 60 * 1000); // Каждые 5 минут
+        }
+
+        function gameLoop() {
+            // Автокликеры
+            let income = gameState.autoClickerLevel;
+            income += gameState.cryptoFarmLevel * 50;
+            income += gameState.foodLevel * 5;
+            income += gameState.gasStationLevel * 10000;
+            
+            gameState.coins += income * getMultiplier();
+            
+            // Проверяем, достаточно ли денег для покупок
+            updateUpgradeButtons();
+            
+            // Обновляем отображение каждую секунду
+            updateDisplay();
+            saveProgress();
+        }
+
+        function houseDeduction() {
+            if (gameState.hasHouse) {
+                if (gameState.coins >= 5000) {
+                    gameState.coins -= 5000;
+                    
+                    // Эффект списания
+                    const deductionEffect = document.createElement('div');
+                    deductionEffect.textContent = '-5,000 (содержание дома)';
+                    deductionEffect.style.position = 'fixed';
+                    deductionEffect.style.bottom = '30%';
+                    deductionEffect.style.left = '50%';
+                    deductionEffect.style.transform = 'translateX(-50%)';
+                    deductionEffect.style.color = 'var(--danger)';
+                    deductionEffect.style.fontWeight = 'bold';
+                    deductionEffect.style.fontSize = '1.2rem';
+                    deductionEffect.style.animation = 'float-up 2s forwards';
+                    document.body.appendChild(deductionEffect);
+                    setTimeout(() => deductionEffect.remove(), 2000);
+                } else {
+                    // Если денег нет, дом продается
+                    gameState.hasHouse = false;
+                    gameState.clothingLevel = 0;
+                    gameState.foodLevel = 0;
+                    gameState.interiorLevel = 0;
+                    
+                    const loseHouseEffect = document.createElement('div');
+                    loseHouseEffect.textContent = 'Вы потеряли дом из-за неуплаты!';
+                    loseHouseEffect.style.position = 'fixed';
+                    loseHouseEffect.style.top = '50%';
+                    loseHouseEffect.style.left = '50%';
+                    loseHouseEffect.style.transform = 'translate(-50%, -50%)';
+                    loseHouseEffect.style.backgroundColor = 'rgba(225, 112, 85, 0.9)';
+                    loseHouseEffect.style.color = 'white';
+                    loseHouseEffect.style.padding = '15px 25px';
+                    loseHouseEffect.style.borderRadius = '25px';
+                    loseHouseEffect.style.zIndex = '1000';
+                    loseHouseEffect.style.fontWeight = 'bold';
+                    loseHouseEffect.style.fontSize = '1.2rem';
+                    loseHouseEffect.style.animation = 'fadeOut 3s forwards';
+                    document.body.appendChild(loseHouseEffect);
+                    setTimeout(() => loseHouseEffect.remove(), 3000);
+                }
+                updateDisplay();
+                saveProgress();
+            }
         }
 
         function initParticles() {
@@ -477,6 +701,22 @@
                 
                 container.appendChild(particle);
             }
+        }
+
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Убираем активный класс у всех кнопок и контента
+                    document.querySelectorAll('.tab-button').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей кнопке и соответствующему контенту
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
         }
 
         function processStartParam() {
@@ -550,7 +790,7 @@
             const clicker = document.getElementById('clicker');
             
             clicker.addEventListener('click', (e) => {
-                const value = (1 + gameState.megaClickerLevel * 5) * getMultiplier();
+                const value = (1 + gameState.megaClickerLevel * 5 + gameState.goldenClickerLevel * 10 + gameState.interiorLevel * 20) * getMultiplier();
                 gameState.coins += value;
                 gameState.clicks++;
 
@@ -579,12 +819,103 @@
                 updateDisplay();
             });
 
+            // Базовые улучшения
             document.getElementById('buyAutoClicker').addEventListener('click', () =>
                 buyUpgrade('autoClicker', 270, 200));
             document.getElementById('buyClickMultiplier').addEventListener('click', () =>
                 buyUpgrade('clickMultiplier', 320, 200, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel));
             document.getElementById('buyMegaClicker').addEventListener('click', () =>
                 buyUpgrade('megaClicker', 470, 200));
+            
+            // Премиум улучшения
+            document.getElementById('buyGoldenClicker').addEventListener('click', () =>
+                buyUpgrade('goldenClicker', 1500, 500));
+            document.getElementById('buyDiamondMultiplier').addEventListener('click', () =>
+                buyUpgrade('diamondMultiplier', 2500, 800, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel + gameState.diamondMultiplierLevel * 3));
+            document.getElementById('buyCryptoFarm').addEventListener('click', () =>
+                buyUpgrade('cryptoFarm', 5000, 1500));
+            
+            // Недвижимость
+            document.getElementById('buyHouse').addEventListener('click', () => {
+                if (!gameState.hasHouse && gameState.coins >= 50000) {
+                    gameState.coins -= 50000;
+                    gameState.hasHouse = true;
+                    gameState.lastHouseDeduction = Date.now();
+                    
+                    // Показываем связанные улучшения
+                    document.getElementById('clothingUpgrade').style.display = 'flex';
+                    document.getElementById('foodUpgrade').style.display = 'flex';
+                    document.getElementById('interiorUpgrade').style.display = 'flex';
+                    
+                    // Эффект покупки дома
+                    const houseEffect = document.createElement('div');
+                    houseEffect.textContent = '🏠 Вы купили дом! Доступны новые улучшения!';
+                    houseEffect.style.position = 'fixed';
+                    houseEffect.style.top = '50%';
+                    houseEffect.style.left = '50%';
+                    houseEffect.style.transform = 'translate(-50%, -50%)';
+                    houseEffect.style.backgroundColor = 'rgba(0, 184, 148, 0.9)';
+                    houseEffect.style.color = 'white';
+                    houseEffect.style.padding = '15px 25px';
+                    houseEffect.style.borderRadius = '25px';
+                    houseEffect.style.zIndex = '1000';
+                    houseEffect.style.fontWeight = 'bold';
+                    houseEffect.style.fontSize = '1.2rem';
+                    houseEffect.style.animation = 'fadeOut 3s forwards';
+                    document.body.appendChild(houseEffect);
+                    setTimeout(() => houseEffect.remove(), 3000);
+                    
+                    saveProgress();
+                    updateDisplay();
+                } else if (!gameState.hasHouse) {
+                    showNotEnoughEffect();
+                }
+            });
+            
+            document.getElementById('buyClothing').addEventListener('click', () =>
+                buyUpgrade('clothing', 10000, 3000, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel + gameState.diamondMultiplierLevel * 3 + gameState.clothingLevel * 2));
+            
+            document.getElementById('buyFood').addEventListener('click', () =>
+                buyUpgrade('food', 15000, 5000));
+            
+            document.getElementById('buyInterior').addEventListener('click', () =>
+                buyUpgrade('interior', 25000, 8000));
+            
+            document.getElementById('buyCar').addEventListener('click', () => {
+                if (!gameState.hasCar && gameState.coins >= 300000) {
+                    gameState.coins -= 300000;
+                    gameState.hasCar = true;
+                    
+                    // Показываем связанные улучшения
+                    document.getElementById('gasStationUpgrade').style.display = 'flex';
+                    
+                    // Эффект покупки машины
+                    const carEffect = document.createElement('div');
+                    carEffect.textContent = '🚗 Вы купили машину! Теперь можно купить заправку!';
+                    carEffect.style.position = 'fixed';
+                    carEffect.style.top = '50%';
+                    carEffect.style.left = '50%';
+                    carEffect.style.transform = 'translate(-50%, -50%)';
+                    carEffect.style.backgroundColor = 'rgba(108, 92, 231, 0.9)';
+                    carEffect.style.color = 'white';
+                    carEffect.style.padding = '15px 25px';
+                    carEffect.style.borderRadius = '25px';
+                    carEffect.style.zIndex = '1000';
+                    carEffect.style.fontWeight = 'bold';
+                    carEffect.style.fontSize = '1.2rem';
+                    carEffect.style.animation = 'fadeOut 3s forwards';
+                    document.body.appendChild(carEffect);
+                    setTimeout(() => carEffect.remove(), 3000);
+                    
+                    saveProgress();
+                    updateDisplay();
+                } else if (!gameState.hasCar) {
+                    showNotEnoughEffect();
+                }
+            });
+            
+            document.getElementById('buyGasStation').addEventListener('click', () =>
+                buyUpgrade('gasStation', 500000, 200000));
         }
 
         function buyUpgrade(type, baseCost, costIncrease, onBuy) {
@@ -615,23 +946,27 @@
                 saveProgress();
                 updateDisplay();
             } else {
-                // Эффект недостаточно денег
-                const notEnoughEffect = document.createElement('div');
-                notEnoughEffect.textContent = 'Недостаточно SKURCOIN! 😢';
-                notEnoughEffect.style.position = 'fixed';
-                notEnoughEffect.style.bottom = '20%';
-                notEnoughEffect.style.left = '50%';
-                notEnoughEffect.style.transform = 'translateX(-50%)';
-                notEnoughEffect.style.backgroundColor = 'rgba(255, 99, 71, 0.9)';
-                notEnoughEffect.style.color = 'white';
-                notEnoughEffect.style.padding = '10px 20px';
-                notEnoughEffect.style.borderRadius = '20px';
-                notEnoughEffect.style.zIndex = '1000';
-                notEnoughEffect.style.fontWeight = 'bold';
-                notEnoughEffect.style.animation = 'fadeOut 2s forwards';
-                document.body.appendChild(notEnoughEffect);
-                setTimeout(() => notEnoughEffect.remove(), 2000);
+                showNotEnoughEffect();
             }
+        }
+
+        function showNotEnoughEffect() {
+            // Эффект недостаточно денег
+            const notEnoughEffect = document.createElement('div');
+            notEnoughEffect.textContent = 'Недостаточно SKURCOIN! 😢';
+            notEnoughEffect.style.position = 'fixed';
+            notEnoughEffect.style.bottom = '20%';
+            notEnoughEffect.style.left = '50%';
+            notEnoughEffect.style.transform = 'translateX(-50%)';
+            notEnoughEffect.style.backgroundColor = 'rgba(255, 99, 71, 0.9)';
+            notEnoughEffect.style.color = 'white';
+            notEnoughEffect.style.padding = '10px 20px';
+            notEnoughEffect.style.borderRadius = '20px';
+            notEnoughEffect.style.zIndex = '1000';
+            notEnoughEffect.style.fontWeight = 'bold';
+            notEnoughEffect.style.animation = 'fadeOut 2s forwards';
+            document.body.appendChild(notEnoughEffect);
+            setTimeout(() => notEnoughEffect.remove(), 2000);
         }
 
         function getMultiplier() {
@@ -639,29 +974,102 @@
         }
 
         function updateDisplay() {
-            document.getElementById('coins').textContent = `${Math.floor(gameState.coins)} SKURCOIN`;
-            document.getElementById('clicks').textContent = gameState.clicks;
+            // Форматируем числа с разделителями
+            const formatNumber = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            
+            document.getElementById('coins').textContent = `${formatNumber(Math.floor(gameState.coins))} SKURCOIN`;
+            document.getElementById('clicks').textContent = formatNumber(gameState.clicks);
             document.getElementById('multiplier').textContent = `x${getMultiplier()}${gameState.hasReferralBonus ? ' (x3 реф)' : ''}`;
-            document.getElementById('cps').textContent = `${gameState.autoClickerLevel} SKURCOIN/сек`;
+            
+            // Рассчитываем доход в секунду
+            let incomePerSecond = gameState.autoClickerLevel;
+            incomePerSecond += gameState.cryptoFarmLevel * 50;
+            incomePerSecond += gameState.foodLevel * 5;
+            incomePerSecond += gameState.gasStationLevel * 10000;
+            incomePerSecond *= getMultiplier();
+            
+            document.getElementById('cps').textContent = `${formatNumber(incomePerSecond)} SKURCOIN/сек`;
 
+            // Базовые улучшения
             document.getElementById('autoClickerLevel').textContent = `Уровень: ${gameState.autoClickerLevel}`;
             document.getElementById('clickMultiplierLevel').textContent = `Уровень: ${gameState.clickMultiplierLevel}`;
             document.getElementById('megaClickerLevel').textContent = `Уровень: ${gameState.megaClickerLevel}`;
-
-            document.getElementById('buyAutoClicker').textContent = `Купить: ${270 + (gameState.autoClickerLevel * 200)}`;
-            document.getElementById('buyClickMultiplier').textContent = `Купить: ${320 + (gameState.clickMultiplierLevel * 200)}`;
-            document.getElementById('buyMegaClicker').textContent = `Купить: ${470 + (gameState.megaClickerLevel * 200)}`;
-
+            
+            document.getElementById('buyAutoClicker').textContent = `Купить: ${formatNumber(270 + (gameState.autoClickerLevel * 200))}`;
+            document.getElementById('buyClickMultiplier').textContent = `Купить: ${formatNumber(320 + (gameState.clickMultiplierLevel * 200))}`;
+            document.getElementById('buyMegaClicker').textContent = `Купить: ${formatNumber(470 + (gameState.megaClickerLevel * 200))}`;
+            
+            // Премиум улучшения
+            document.getElementById('goldenClickerLevel').textContent = `Уровень: ${gameState.goldenClickerLevel}`;
+            document.getElementById('diamondMultiplierLevel').textContent = `Уровень: ${gameState.diamondMultiplierLevel}`;
+            document.getElementById('cryptoFarmLevel').textContent = `Уровень: ${gameState.cryptoFarmLevel}`;
+            
+            document.getElementById('buyGoldenClicker').textContent = `Купить: ${formatNumber(1500 + (gameState.goldenClickerLevel * 500))}`;
+            document.getElementById('buyDiamondMultiplier').textContent = `Купить: ${formatNumber(2500 + (gameState.diamondMultiplierLevel * 800))}`;
+            document.getElementById('buyCryptoFarm').textContent = `Купить: ${formatNumber(5000 + (gameState.cryptoFarmLevel * 1500))}`;
+            
+            // Недвижимость
+            document.getElementById('houseStatus').textContent = gameState.hasHouse ? 'Куплено' : 'Не куплено';
+            document.getElementById('carStatus').textContent = gameState.hasCar ? 'Куплено' : 'Не куплено';
+            
+            document.getElementById('buyHouse').textContent = gameState.hasHouse ? 'Уже куплено' : `Купить: 50,000`;
+            document.getElementById('buyHouse').disabled = gameState.hasHouse || gameState.coins < 50000;
+            
+            document.getElementById('buyCar').textContent = gameState.hasCar ? 'Уже куплено' : `Купить: 300,000`;
+            document.getElementById('buyCar').disabled = gameState.hasCar || gameState.coins < 300000;
+            
+            // Улучшения дома
+            if (gameState.hasHouse) {
+                document.getElementById('clothingLevel').textContent = `Уровень: ${gameState.clothingLevel}`;
+                document.getElementById('foodLevel').textContent = `Уровень: ${gameState.foodLevel}`;
+                document.getElementById('interiorLevel').textContent = `Уровень: ${gameState.interiorLevel}`;
+                
+                document.getElementById('buyClothing').textContent = `Купить: ${formatNumber(10000 + (gameState.clothingLevel * 3000))}`;
+                document.getElementById('buyFood').textContent = `Купить: ${formatNumber(15000 + (gameState.foodLevel * 5000))}`;
+                document.getElementById('buyInterior').textContent = `Купить: ${formatNumber(25000 + (gameState.interiorLevel * 8000))}`;
+            }
+            
+            // Заправка
+            if (gameState.hasCar) {
+                document.getElementById('gasStationLevel').textContent = `Уровень: ${gameState.gasStationLevel}`;
+                document.getElementById('buyGasStation').textContent = `Купить: ${formatNumber(500000 + (gameState.gasStationLevel * 200000))}`;
+            }
+            
             updateUpgradeButtons();
         }
 
         function updateUpgradeButtons() {
+            // Базовые улучшения
             document.getElementById('buyAutoClicker').disabled =
                 gameState.coins < (270 + (gameState.autoClickerLevel * 200));
             document.getElementById('buyClickMultiplier').disabled =
                 gameState.coins < (320 + (gameState.clickMultiplierLevel * 200));
             document.getElementById('buyMegaClicker').disabled =
                 gameState.coins < (470 + (gameState.megaClickerLevel * 200));
+            
+            // Премиум улучшения
+            document.getElementById('buyGoldenClicker').disabled =
+                gameState.coins < (1500 + (gameState.goldenClickerLevel * 500));
+            document.getElementById('buyDiamondMultiplier').disabled =
+                gameState.coins < (2500 + (gameState.diamondMultiplierLevel * 800));
+            document.getElementById('buyCryptoFarm').disabled =
+                gameState.coins < (5000 + (gameState.cryptoFarmLevel * 1500));
+            
+            // Улучшения дома
+            if (gameState.hasHouse) {
+                document.getElementById('buyClothing').disabled =
+                    gameState.coins < (10000 + (gameState.clothingLevel * 3000));
+                document.getElementById('buyFood').disabled =
+                    gameState.coins < (15000 + (gameState.foodLevel * 5000));
+                document.getElementById('buyInterior').disabled =
+                    gameState.coins < (25000 + (gameState.interiorLevel * 8000));
+            }
+            
+            // Заправка
+            if (gameState.hasCar) {
+                document.getElementById('buyGasStation').disabled =
+                    gameState.coins < (500000 + (gameState.gasStationLevel * 200000));
+            }
         }
 
         function saveProgress() {
@@ -675,6 +1083,18 @@
             if (saved) {
                 try {
                     Object.assign(gameState, JSON.parse(saved));
+                    
+                    // Показываем скрытые улучшения, если они были куплены
+                    if (gameState.hasHouse) {
+                        document.getElementById('clothingUpgrade').style.display = 'flex';
+                        document.getElementById('foodUpgrade').style.display = 'flex';
+                        document.getElementById('interiorUpgrade').style.display = 'flex';
+                    }
+                    
+                    if (gameState.hasCar) {
+                        document.getElementById('gasStationUpgrade').style.display = 'flex';
+                    }
+                    
                     if (gameState.hasReferralBonus) {
                         document.getElementById('referralStatus').textContent = '✅ У вас есть x3 множитель';
                     }
@@ -683,14 +1103,6 @@
                 }
             }
         }
-
-        setInterval(() => {
-            if (gameState.autoClickerLevel > 0) {
-                gameState.coins += gameState.autoClickerLevel * getMultiplier();
-                saveProgress();
-                updateDisplay();
-            }
-        }, 1000);
 
         document.addEventListener('DOMContentLoaded', initGame);
     </script>
