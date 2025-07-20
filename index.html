@@ -3,142 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKURCOIN Кликер</title>
+    <title>🔥 SKURCOIN Кликер 🔥</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a2e;
-            color: white;
-            text-align: center;
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #FD79A8;
+            --accent: #00CEFF;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --success: #00B894;
+        }
+        
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif;
             user-select: none;
         }
+        
+        body {
+            background: linear-gradient(135deg, #2D3436 0%, #000000 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background-color: #16213e;
-            border-radius: 15px;
+            max-width: 100%;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
+        
         h1 {
-            color: #f9c74f;
-            margin-bottom: 5px;
-        }
-        .coin-display {
-            font-size: 24px;
+            text-align: center;
             margin: 10px 0;
-            color: #f9c74f;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(253, 121, 168, 0.3);
         }
+        
+        .coin-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(108, 92, 231, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        .cps {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        .clicker-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        
         .clicker {
-            width: 250px;
-            height: 250px;
-            margin: 20px auto;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
             cursor: pointer;
+            position: relative;
+            z-index: 2;
             transition: transform 0.1s;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.7) 0%, rgba(74, 63, 207, 0.7) 100%);
+            box-shadow: 
+                0 0 25px rgba(108, 92, 231, 0.8),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: none;
             background-image: url('https://i.ibb.co/S7ZJcBQB/Untitled36-20250719163136.png');
             background-size: cover;
-            background-repeat: no-repeat;
             background-position: center;
-            border-radius: 50%;
-            border: 4px solid #f9c74f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
         }
+        
+        .clicker:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 40%, rgba(255, 255, 255, 0.2) 100%);
+            z-index: 3;
+        }
+        
         .clicker:active {
             transform: scale(0.95);
         }
+        
+        .click-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 4;
+        }
+        
+        @keyframes click-animation {
+            0% {
+                transform: scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .coin-effect {
+            position: absolute;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.2rem;
+            animation: float-up 1s forwards;
+            pointer-events: none;
+            z-index: 10;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        
         .stats {
             display: flex;
             justify-content: space-around;
             margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
+        
         .stat {
-            background-color: #0f3460;
-            padding: 10px;
-            border-radius: 10px;
-            width: 45%;
+            text-align: center;
         }
+        
+        .stat h3 {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .stat div {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
         .upgrades {
-            margin-top: 20px;
+            margin-top: 30px;
         }
+        
+        .upgrades h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .upgrades h2:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        
         .upgrade {
-            background-color: #0f3460;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        button {
-            background-color: #e94560;
+        
+        .upgrade:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .upgrade div h3 {
+            font-size: 1.1rem;
+            color: var(--light);
+            margin-bottom: 5px;
+        }
+        
+        .upgrade div p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3px;
+        }
+        
+        .upgrade button {
+            background: linear-gradient(to right, var(--primary), var(--accent));
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            min-width: 120px;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.4);
         }
-        button:hover {
-            background-color: #ff6b81;
-        }
-        button:disabled {
-            background-color: #555;
+        
+        .upgrade button:disabled {
+            background: linear-gradient(to right, #636e72, #b2bec3);
+            box-shadow: none;
             cursor: not-allowed;
+            opacity: 0.7;
         }
-        .cps {
-            font-size: 16px;
-            color: #a5a5a5;
-            margin-top: 5px;
+        
+        .upgrade button:active:not(:disabled) {
+            transform: scale(0.95);
         }
-        .coin-effect {
-            position: absolute;
-            color: #f9c74f;
-            font-weight: bold;
-            animation: floatUp 1s forwards;
-            pointer-events: none;
-            z-index: 100;
-        }
+        
         .referral-section {
-            margin: 20px 0;
+            background: rgba(0, 206, 255, 0.1);
             padding: 15px;
-            background-color: #0f3460;
-            border-radius: 10px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(0, 206, 255, 0.2);
         }
+        
+        .referral-section h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .referral-section p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
         .referral-link {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
             word-break: break-all;
-            margin: 10px 0;
-            padding: 8px;
-            background-color: #16213e;
-            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+            text-align: center;
+            border: 1px dashed rgba(0, 206, 255, 0.5);
         }
-        @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100px); opacity: 0; }
+        
+        #copyReferralBtn {
+            width: 100%;
+            background: linear-gradient(to right, var(--secondary), #FF7675);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(253, 121, 168, 0.4);
+        }
+        
+        #copyReferralBtn:active {
+            transform: scale(0.98);
+        }
+        
+        #referralStatus {
+            color: var(--success);
+            font-weight: 500;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* Анимации */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes float-up {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+        
+        /* Эффект частиц */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .clicker-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .coin-display {
+                font-size: 2rem;
+            }
+            
+            .upgrade {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .upgrade button {
+                margin-top: 10px;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="particles" id="particles"></div>
     <div class="container">
-        <h1>SKURCOIN Кликер</h1>
+        <h1>🔥 SKURCOIN Кликер 🔥</h1>
         <div class="coin-display" id="coins">0 SKURCOIN</div>
         <div class="cps" id="cps">0 SKURCOIN/сек</div>
-        
-        <div class="clicker" id="clicker"></div>
-        
-        <div class="referral-section">
-            <h3>Реферальная система</h3>
-            <p>Пригласите друзей и получите x3 множитель навсегда!</p>
-            <div class="referral-link" id="referralLink">Генерация ссылки...</div>
-            <button id="copyReferralBtn">Копировать ссылку</button>
-            <p id="referralStatus"></p>
+
+        <div class="clicker-container">
+            <div class="clicker" id="clicker">Клик!</div>
         </div>
-        
+
         <div class="stats">
             <div class="stat">
                 <h3>Клики</h3>
@@ -149,16 +387,24 @@
                 <div id="multiplier">x1</div>
             </div>
         </div>
-        
+
+        <div class="referral-section">
+            <h3>💎 Реферальная система</h3>
+            <p>Пригласи друзей и получи вечный x3 множитель!</p>
+            <div class="referral-link" id="referralLink">Генерация ссылки...</div>
+            <button id="copyReferralBtn">Копировать ссылку</button>
+            <p id="referralStatus"></p>
+        </div>
+
         <div class="upgrades">
-            <h2>Улучшения</h2>
+            <h2>⚡ Улучшения</h2>
             <div class="upgrade">
                 <div>
                     <h3>Автокликер</h3>
                     <p>+1 SKURCOIN/сек</p>
                     <p id="autoClickerLevel">Уровень: 0</p>
                 </div>
-                <button id="buyAutoClicker">Цена: 270</button>
+                <button id="buyAutoClicker">Купить: 270</button>
             </div>
             <div class="upgrade">
                 <div>
@@ -166,7 +412,7 @@
                     <p>+1 к множителю</p>
                     <p id="clickMultiplierLevel">Уровень: 0</p>
                 </div>
-                <button id="buyClickMultiplier">Цена: 320</button>
+                <button id="buyClickMultiplier">Купить: 320</button>
             </div>
             <div class="upgrade">
                 <div>
@@ -174,7 +420,7 @@
                     <p>+5 SKURCOIN/клик</p>
                     <p id="megaClickerLevel">Уровень: 0</p>
                 </div>
-                <button id="buyMegaClicker">Цена: 470</button>
+                <button id="buyMegaClicker">Купить: 470</button>
             </div>
         </div>
     </div>
@@ -192,22 +438,11 @@
             clickMultiplierLevel: 0,
             megaClickerLevel: 0,
             hasReferralBonus: false,
-            referralCode: null,
             referredBy: null,
             userId: null
         };
 
-        function generateReferralCode() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let code = '';
-            for (let i = 0; i < 8; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
-        }
-
         function initGame() {
-            // Получаем ID пользователя
             if (tg.initDataUnsafe?.user?.id) {
                 gameState.userId = tg.initDataUnsafe.user.id.toString();
             } else {
@@ -215,21 +450,38 @@
             }
 
             loadProgress();
-
-            if (!gameState.referralCode) {
-                gameState.referralCode = generateReferralCode();
-                saveProgress();
-            }
-
             processStartParam();
             updateReferralLink();
             setupEventListeners();
             updateDisplay();
+            initParticles();
+        }
+
+        function initParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 5 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = `rgba(${Math.floor(Math.random() * 100 + 156)}, ${Math.floor(Math.random() * 100 + 156)}, 255, ${Math.random() * 0.5 + 0.1})`;
+                particle.style.borderRadius = '50%';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.left = Math.random() * 100 + 'vw';
+                
+                const animationDuration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${animationDuration}s linear infinite`;
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                
+                container.appendChild(particle);
+            }
         }
 
         function processStartParam() {
             const startParam = tg.initDataUnsafe?.start_param;
-            if (startParam && startParam !== gameState.referralCode && !gameState.referredBy) {
+            if (startParam && startParam !== gameState.userId && !gameState.referredBy) {
                 gameState.referredBy = startParam;
                 if (!gameState.hasReferralBonus) {
                     applyReferralBonus();
@@ -238,14 +490,32 @@
         }
 
         function updateReferralLink() {
-            const link = `https://t.me/${BOT_USERNAME}?start=${gameState.referralCode}`;
+            const referralCode = gameState.userId;
+            const link = `https://t.me/${BOT_USERNAME}?start=${referralCode}`;
             document.getElementById('referralLink').textContent = link;
-            
+
             document.getElementById('copyReferralBtn').onclick = () => {
                 navigator.clipboard.writeText(link);
                 const btn = document.getElementById('copyReferralBtn');
-                btn.textContent = 'Скопировано!';
+                btn.textContent = 'Скопировано! 🎉';
                 setTimeout(() => btn.textContent = 'Копировать ссылку', 2000);
+                
+                // Эффект при копировании
+                const copyEffect = document.createElement('div');
+                copyEffect.textContent = 'Скопировано!';
+                copyEffect.style.position = 'fixed';
+                copyEffect.style.top = '50%';
+                copyEffect.style.left = '50%';
+                copyEffect.style.transform = 'translate(-50%, -50%)';
+                copyEffect.style.backgroundColor = 'rgba(0, 184, 148, 0.9)';
+                copyEffect.style.color = 'white';
+                copyEffect.style.padding = '10px 20px';
+                copyEffect.style.borderRadius = '20px';
+                copyEffect.style.zIndex = '1000';
+                copyEffect.style.fontWeight = 'bold';
+                copyEffect.style.animation = 'fadeOut 2s forwards';
+                document.body.appendChild(copyEffect);
+                setTimeout(() => copyEffect.remove(), 2000);
             };
         }
 
@@ -253,34 +523,67 @@
             gameState.bonusMultiplier = 3;
             gameState.hasReferralBonus = true;
             document.getElementById('referralStatus').textContent = '✅ Вы получили x3 множитель!';
+            
+            // Эффект при получении бонуса
+            const bonusEffect = document.createElement('div');
+            bonusEffect.textContent = 'x3 Множитель активирован! 🎁';
+            bonusEffect.style.position = 'fixed';
+            bonusEffect.style.top = '50%';
+            bonusEffect.style.left = '50%';
+            bonusEffect.style.transform = 'translate(-50%, -50%)';
+            bonusEffect.style.backgroundColor = 'rgba(253, 121, 168, 0.9)';
+            bonusEffect.style.color = 'white';
+            bonusEffect.style.padding = '15px 25px';
+            bonusEffect.style.borderRadius = '25px';
+            bonusEffect.style.zIndex = '1000';
+            bonusEffect.style.fontWeight = 'bold';
+            bonusEffect.style.fontSize = '1.2rem';
+            bonusEffect.style.animation = 'fadeOut 3s forwards';
+            document.body.appendChild(bonusEffect);
+            setTimeout(() => bonusEffect.remove(), 3000);
+            
             saveProgress();
             updateDisplay();
         }
 
         function setupEventListeners() {
-            document.getElementById('clicker').addEventListener('click', (e) => {
+            const clicker = document.getElementById('clicker');
+            
+            clicker.addEventListener('click', (e) => {
                 const value = (1 + gameState.megaClickerLevel * 5) * getMultiplier();
                 gameState.coins += value;
                 gameState.clicks++;
-                
+
+                // Эффект клика (круг)
+                const clickEffect = document.createElement('div');
+                clickEffect.className = 'click-effect';
+                clickEffect.style.animation = 'click-animation 0.5s forwards';
+                clicker.appendChild(clickEffect);
+                setTimeout(() => clickEffect.remove(), 500);
+
+                // Эффект монетки
                 const coin = document.createElement('div');
                 coin.className = 'coin-effect';
                 coin.textContent = `+${value}`;
                 const rect = e.target.getBoundingClientRect();
                 coin.style.left = `${e.clientX - rect.left}px`;
                 coin.style.top = `${e.clientY - rect.top}px`;
-                e.target.appendChild(coin);
+                clicker.appendChild(coin);
                 setTimeout(() => coin.remove(), 1000);
-                
+
+                // Эффект нажатия
+                clicker.style.transform = 'scale(0.95)';
+                setTimeout(() => clicker.style.transform = 'scale(1)', 100);
+
                 saveProgress();
                 updateDisplay();
             });
 
-            document.getElementById('buyAutoClicker').addEventListener('click', () => 
+            document.getElementById('buyAutoClicker').addEventListener('click', () =>
                 buyUpgrade('autoClicker', 270, 200));
-            document.getElementById('buyClickMultiplier').addEventListener('click', () => 
+            document.getElementById('buyClickMultiplier').addEventListener('click', () =>
                 buyUpgrade('clickMultiplier', 320, 200, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel));
-            document.getElementById('buyMegaClicker').addEventListener('click', () => 
+            document.getElementById('buyMegaClicker').addEventListener('click', () =>
                 buyUpgrade('megaClicker', 470, 200));
         }
 
@@ -290,8 +593,44 @@
                 gameState.coins -= cost;
                 gameState[`${type}Level`]++;
                 if (onBuy) onBuy();
+                
+                // Эффект покупки
+                const upgradeName = document.getElementById(`${type}Level`).parentElement.querySelector('h3').textContent;
+                const purchaseEffect = document.createElement('div');
+                purchaseEffect.textContent = `${upgradeName} улучшен! 🚀`;
+                purchaseEffect.style.position = 'fixed';
+                purchaseEffect.style.bottom = '20%';
+                purchaseEffect.style.left = '50%';
+                purchaseEffect.style.transform = 'translateX(-50%)';
+                purchaseEffect.style.backgroundColor = 'rgba(108, 92, 231, 0.9)';
+                purchaseEffect.style.color = 'white';
+                purchaseEffect.style.padding = '10px 20px';
+                purchaseEffect.style.borderRadius = '20px';
+                purchaseEffect.style.zIndex = '1000';
+                purchaseEffect.style.fontWeight = 'bold';
+                purchaseEffect.style.animation = 'fadeOut 2s forwards';
+                document.body.appendChild(purchaseEffect);
+                setTimeout(() => purchaseEffect.remove(), 2000);
+                
                 saveProgress();
                 updateDisplay();
+            } else {
+                // Эффект недостаточно денег
+                const notEnoughEffect = document.createElement('div');
+                notEnoughEffect.textContent = 'Недостаточно SKURCOIN! 😢';
+                notEnoughEffect.style.position = 'fixed';
+                notEnoughEffect.style.bottom = '20%';
+                notEnoughEffect.style.left = '50%';
+                notEnoughEffect.style.transform = 'translateX(-50%)';
+                notEnoughEffect.style.backgroundColor = 'rgba(255, 99, 71, 0.9)';
+                notEnoughEffect.style.color = 'white';
+                notEnoughEffect.style.padding = '10px 20px';
+                notEnoughEffect.style.borderRadius = '20px';
+                notEnoughEffect.style.zIndex = '1000';
+                notEnoughEffect.style.fontWeight = 'bold';
+                notEnoughEffect.style.animation = 'fadeOut 2s forwards';
+                document.body.appendChild(notEnoughEffect);
+                setTimeout(() => notEnoughEffect.remove(), 2000);
             }
         }
 
@@ -304,24 +643,24 @@
             document.getElementById('clicks').textContent = gameState.clicks;
             document.getElementById('multiplier').textContent = `x${getMultiplier()}${gameState.hasReferralBonus ? ' (x3 реф)' : ''}`;
             document.getElementById('cps').textContent = `${gameState.autoClickerLevel} SKURCOIN/сек`;
-            
+
             document.getElementById('autoClickerLevel').textContent = `Уровень: ${gameState.autoClickerLevel}`;
             document.getElementById('clickMultiplierLevel').textContent = `Уровень: ${gameState.clickMultiplierLevel}`;
             document.getElementById('megaClickerLevel').textContent = `Уровень: ${gameState.megaClickerLevel}`;
-            
-            document.getElementById('buyAutoClicker').textContent = `Цена: ${270 + (gameState.autoClickerLevel * 200)}`;
-            document.getElementById('buyClickMultiplier').textContent = `Цена: ${320 + (gameState.clickMultiplierLevel * 200)}`;
-            document.getElementById('buyMegaClicker').textContent = `Цена: ${470 + (gameState.megaClickerLevel * 200)}`;
-            
+
+            document.getElementById('buyAutoClicker').textContent = `Купить: ${270 + (gameState.autoClickerLevel * 200)}`;
+            document.getElementById('buyClickMultiplier').textContent = `Купить: ${320 + (gameState.clickMultiplierLevel * 200)}`;
+            document.getElementById('buyMegaClicker').textContent = `Купить: ${470 + (gameState.megaClickerLevel * 200)}`;
+
             updateUpgradeButtons();
         }
 
         function updateUpgradeButtons() {
-            document.getElementById('buyAutoClicker').disabled = 
+            document.getElementById('buyAutoClicker').disabled =
                 gameState.coins < (270 + (gameState.autoClickerLevel * 200));
-            document.getElementById('buyClickMultiplier').disabled = 
+            document.getElementById('buyClickMultiplier').disabled =
                 gameState.coins < (320 + (gameState.clickMultiplierLevel * 200));
-            document.getElementById('buyMegaClicker').disabled = 
+            document.getElementById('buyMegaClicker').disabled =
                 gameState.coins < (470 + (gameState.megaClickerLevel * 200));
         }
 
