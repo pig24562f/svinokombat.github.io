@@ -9,13 +9,34 @@
     <style>
         :root {
             --primary: #6C5CE7;
+            --primary-dark: #5649c0;
             --secondary: #FD79A8;
             --accent: #00CEFF;
+            --accent-dark: #00b8e6;
             --dark: #2D3436;
+            --darker: #1a1e1f;
             --light: #F5F6FA;
             --success: #00B894;
+            --success-dark: #00a382;
             --warning: #FDCB6E;
             --danger: #E17055;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --bg-gradient: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            --balance-bg: rgba(0, 0, 0, 0.3);
+            --upgrade-bg: rgba(255, 255, 255, 0.05);
+            --notification-bg: rgba(0, 206, 255, 0.9);
+        }
+        
+        .light-theme {
+            --text: #2D3436;
+            --text-secondary: rgba(45, 52, 54, 0.7);
+            --bg-gradient: linear-gradient(135deg, #f5f6fa 0%, #dfe6e9 100%);
+            --balance-bg: rgba(255, 255, 255, 0.7);
+            --upgrade-bg: rgba(0, 0, 0, 0.05);
+            --notification-bg: rgba(0, 206, 255, 0.8);
+            --darker: #f5f6fa;
+            --dark: #dfe6e9;
         }
         
         * {
@@ -24,58 +45,94 @@
             box-sizing: border-box;
             font-family: 'Rubik', sans-serif;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            background: linear-gradient(135deg, #2D3436 0%, #000000 100%);
-            color: var(--light);
+            background: var(--bg-gradient);
+            color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            padding-bottom: 20px;
+            transition: all 0.3s;
         }
         
         .container {
             max-width: 100%;
-            padding: 20px;
+            padding: 15px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
             position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
         }
         
         h1 {
-            text-align: center;
-            margin: 10px 0;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 900;
             background: linear-gradient(to right, var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(253, 121, 168, 0.3);
+            text-shadow: 0 0 15px rgba(253, 121, 168, 0.3);
+            margin-bottom: 5px;
+            flex-grow: 1;
+        }
+        
+        .balance-container {
+            background: var(--balance-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .coin-display {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             text-align: center;
-            margin: 20px 0;
             background: linear-gradient(to right, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(108, 92, 231, 0.4);
             animation: pulse 2s infinite;
+            margin-bottom: 5px;
         }
         
-        .cps {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+        .income-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            font-size: 1rem;
             color: var(--accent);
             font-weight: 500;
         }
         
+        .income-display img {
+            width: 16px;
+            height: 16px;
+        }
+        
         .clicker-container {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 30px;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
             position: relative;
             animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(108, 92, 231, 0.5));
         }
         
         .clicker {
@@ -86,20 +143,20 @@
             position: relative;
             z-index: 2;
             transition: transform 0.1s;
-            background: radial-gradient(circle, rgba(108, 92, 231, 0.7) 0%, rgba(74, 63, 207, 0.7) 100%);
+            background: radial-gradient(circle, var(--primary) 0%, var(--primary-dark) 100%);
             box-shadow: 
-                0 0 25px rgba(108, 92, 231, 0.8),
-                inset 0 0 15px rgba(255, 255, 255, 0.3);
+                inset 0 0 15px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(108, 92, 231, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
             font-weight: bold;
             font-size: 1.2rem;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             border: none;
-            background-image: url('https://i.ibb.co/S7ZJcBQB/Untitled36-20250719163136.png');
+            background-image: url('https://i.ibb.co/nMW8JFSf/Untitled36-20250721002408.png');
             background-size: cover;
             background-position: center;
         }
@@ -160,6 +217,7 @@
             border-radius: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .stat {
@@ -167,32 +225,66 @@
         }
         
         .stat h3 {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--secondary);
             margin-bottom: 5px;
         }
         
         .stat div {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
         }
         
-        .upgrades {
-            margin-top: 30px;
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 5px;
         }
         
-        .upgrades h2 {
+        .tab {
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            color: var(--secondary);
+            flex: 1;
+            color: var(--text);
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            font-weight: 700;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .upgrades-section {
+            margin-top: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-align: center;
             position: relative;
             display: inline-block;
             left: 50%;
             transform: translateX(-50%);
         }
         
-        .upgrades h2:after {
+        .section-title:after {
             content: '';
             position: absolute;
             bottom: -5px;
@@ -203,72 +295,110 @@
             border-radius: 3px;
         }
         
+        .upgrades-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
         .upgrade {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
+            background: var(--upgrade-bg);
             border-radius: 12px;
-            margin-bottom: 15px;
+            padding: 15px;
             transition: all 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
         .upgrade:hover {
-            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .upgrade div h3 {
+        .upgrade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .upgrade-title {
             font-size: 1.1rem;
-            color: var(--light);
-            margin-bottom: 5px;
+            font-weight: 700;
+            color: var(--text);
         }
         
-        .upgrade div p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 3px;
-        }
-        
-        .upgrade button {
+        .upgrade-price {
+            font-weight: 700;
             background: linear-gradient(to right, var(--primary), var(--accent));
-            color: white;
-            border: none;
-            padding: 10px 15px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .upgrade-info {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .upgrade-level {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .upgrade-button {
+            width: 100%;
+            padding: 10px;
             border-radius: 8px;
+            border: none;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
-            min-width: 120px;
-            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.4);
+            transition: all 0.2s;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 3px 10px rgba(108, 92, 231, 0.3);
         }
         
-        .upgrade button:disabled {
+        .upgrade-button:disabled {
             background: linear-gradient(to right, #636e72, #b2bec3);
-            box-shadow: none;
             cursor: not-allowed;
             opacity: 0.7;
         }
         
-        .upgrade button:active:not(:disabled) {
-            transform: scale(0.95);
+        .upgrade-button:active:not(:disabled) {
+            transform: scale(0.97);
         }
         
-        .premium-upgrade {
-            border: 1px solid var(--warning);
+        .premium .upgrade {
+            border-color: var(--warning);
             background: rgba(253, 203, 110, 0.05);
         }
         
-        .premium-upgrade button {
+        .premium .upgrade-button {
             background: linear-gradient(to right, var(--warning), var(--danger));
-            box-shadow: 0 4px 10px rgba(253, 203, 110, 0.4);
+            box-shadow: 0 3px 10px rgba(253, 203, 110, 0.3);
         }
         
-        .premium-upgrade:hover {
-            background: rgba(253, 203, 110, 0.1);
+        .property .upgrade {
+            border-color: var(--success);
+            background: rgba(0, 184, 148, 0.05);
+        }
+        
+        .property .upgrade-button {
+            background: linear-gradient(to right, var(--success), var(--success-dark));
+            box-shadow: 0 3px 10px rgba(0, 184, 148, 0.3);
+        }
+        
+        .business .upgrade {
+            border-color: var(--secondary);
+            background: rgba(253, 121, 168, 0.05);
+        }
+        
+        .business .upgrade-button {
+            background: linear-gradient(to right, var(--secondary), #FF7675);
+            box-shadow: 0 3px 10px rgba(253, 121, 168, 0.3);
         }
         
         .referral-section {
@@ -277,17 +407,18 @@
             border-radius: 15px;
             margin: 20px 0;
             border: 1px solid rgba(0, 206, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .referral-section h3 {
             color: var(--accent);
             margin-bottom: 10px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-align: center;
         }
         
         .referral-section p {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
             margin-bottom: 10px;
             font-size: 0.9rem;
             text-align: center;
@@ -305,7 +436,7 @@
             border: 1px dashed rgba(0, 206, 255, 0.5);
         }
         
-        #copyReferralBtn {
+        .copy-button {
             width: 100%;
             background: linear-gradient(to right, var(--secondary), #FF7675);
             color: white;
@@ -316,24 +447,257 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(253, 121, 168, 0.4);
+            box-shadow: 0 3px 10px rgba(253, 121, 168, 0.3);
         }
         
-        #copyReferralBtn:active {
+        .copy-button:active {
             transform: scale(0.98);
         }
         
-        #referralStatus {
+        .referral-status {
             color: var(--success);
             font-weight: 500;
             text-align: center;
             font-size: 0.9rem;
         }
         
+        .rebirth-section {
+            background: rgba(253, 203, 110, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(253, 203, 110, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .rebirth-section h3 {
+            color: var(--warning);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .rebirth-section p {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .rebirth-button {
+            width: 100%;
+            background: linear-gradient(to right, var(--warning), var(--danger));
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(253, 203, 110, 0.3);
+        }
+        
+        .rebirth-button:disabled {
+            background: linear-gradient(to right, #636e72, #b2bec3);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .rebirth-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        
+        .rebirth-status {
+            color: var(--warning);
+            font-weight: 500;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .rebirth-btn-top {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: linear-gradient(to right, var(--warning), var(--danger));
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(253, 203, 110, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 5;
+        }
+        
+        .rebirth-btn-top img {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .settings-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .settings-content {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .settings-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .close-settings {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .settings-option {
+            margin-bottom: 15px;
+        }
+        
+        .settings-option h3 {
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        
+        .theme-switcher {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .theme-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .theme-btn.active {
+            transform: scale(0.95);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark-theme-btn {
+            background: linear-gradient(to right, #2D3436, #1a1e1f);
+            color: white;
+        }
+        
+        .light-theme-btn {
+            background: linear-gradient(to right, #f5f6fa, #dfe6e9);
+            color: #2D3436;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--danger), #d63031);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .welcome-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .welcome-content {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .welcome-content h2 {
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .welcome-content p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+        
+        .welcome-content a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .welcome-content button {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
         /* Анимации */
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
         
@@ -364,66 +728,72 @@
             z-index: -1;
         }
         
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--notification-bg);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeOut 3s 2s forwards;
+            text-align: center;
+            max-width: 90%;
+        }
+        
         /* Адаптивность */
         @media (max-width: 480px) {
             .clicker-container {
-                width: 120px;
-                height: 120px;
+                width: 150px;
+                height: 150px;
             }
             
             .coin-display {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .upgrade {
-                flex-direction: column;
-                text-align: center;
+                padding: 12px;
             }
             
-            .upgrade button {
-                margin-top: 10px;
-                width: 100%;
+            .tab {
+                padding: 8px 10px;
+                font-size: 0.9rem;
             }
-        }
-        
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-        
-        .tab-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .tab-button.active {
-            background: var(--primary);
-            box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
+            
+            .rebirth-btn-top {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
     <div class="container">
-        <h1>🔥 SKURCOIN Кликер 🔥</h1>
-        <div class="coin-display" id="coins">0 SKURCOIN</div>
-        <div class="cps" id="cps">0 SKURCOIN/сек</div>
+        <div class="header">
+            <button class="settings-btn" id="settingsBtn">⚙️</button>
+            <h1>🔥 SKURCOIN Кликер 🔥</h1>
+            <div style="width: 40px;"></div> <!-- Для выравнивания -->
+        </div>
+        
+        <button class="rebirth-btn-top" id="rebirthBtnTop">
+            <img src="https://i.ibb.co/PvLjm2Nq/Untitled36-20250721004053.png" alt="Rebirth">
+            Перерождение
+        </button>
+        
+        <div class="balance-container">
+            <div class="coin-display" id="coins">0 SKURCOIN</div>
+            <div class="income-display">
+                <img src="https://i.ibb.co/NdG44Cvr/Untitled36-20250721003321.png" alt="Income">
+                <span id="cps">0 SKURCOIN/сек</span>
+            </div>
+        </div>
 
         <div class="clicker-container">
             <div class="clicker" id="clicker">Клик!</div>
@@ -438,135 +808,274 @@
                 <h3>Множитель</h3>
                 <div id="multiplier">x1</div>
             </div>
-        </div>
-
-        <div class="referral-section">
-            <h3>💎 Реферальная система</h3>
-            <p>Пригласи друзей и получи вечный x3 множитель!</p>
-            <div class="referral-link" id="referralLink">Генерация ссылки...</div>
-            <button id="copyReferralBtn">Копировать ссылку</button>
-            <p id="referralStatus"></p>
+            <div class="stat">
+                <h3>Перерождения</h3>
+                <div id="rebirths">0</div>
+            </div>
         </div>
 
         <div class="tabs">
-            <button class="tab-button active" data-tab="basic">Базовые</button>
-            <button class="tab-button" data-tab="premium">Премиум</button>
-            <button class="tab-button" data-tab="property">Недвижимость</button>
+            <div class="tab active" data-tab="upgrades">Улучшения</div>
+            <div class="tab" data-tab="business">Бизнесы</div>
         </div>
 
-        <div class="tab-content active" id="basic-tab">
-            <div class="upgrades">
-                <h2>⚡ Улучшения</h2>
-                <div class="upgrade">
-                    <div>
-                        <h3>Автокликер</h3>
-                        <p>+1 SKURCOIN/сек</p>
-                        <p id="autoClickerLevel">Уровень: 0</p>
+        <div class="tab-content active" id="upgrades-tab">
+            <div class="referral-section">
+                <h3>💎 Реферальная система</h3>
+                <p>Пригласи друзей и получи вечный x3 множитель!</p>
+                <div class="referral-link" id="referralLink">Загрузка...</div>
+                <button class="copy-button" id="copyReferralBtn">Копировать ссылку</button>
+                <p class="referral-status" id="referralStatus"></p>
+            </div>
+
+            <div class="upgrades-section">
+                <h2 class="section-title">⚡ Базовые улучшения</h2>
+                <div class="upgrades-container">
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Автокликер</div>
+                            <div class="upgrade-price" id="autoClickerPrice">270</div>
+                        </div>
+                        <div class="upgrade-info">+1 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="autoClickerLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyAutoClicker">Купить</button>
                     </div>
-                    <button id="buyAutoClicker">Купить: 270</button>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Улучшенный клик</div>
+                            <div class="upgrade-price" id="clickMultiplierPrice">320</div>
+                        </div>
+                        <div class="upgrade-info">+1 к множителю</div>
+                        <div class="upgrade-level" id="clickMultiplierLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyClickMultiplier">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Мега кликер</div>
+                            <div class="upgrade-price" id="megaClickerPrice">470</div>
+                        </div>
+                        <div class="upgrade-info">+5 SKURCOIN/клик</div>
+                        <div class="upgrade-level" id="megaClickerLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyMegaClicker">Купить</button>
+                    </div>
                 </div>
-                <div class="upgrade">
-                    <div>
-                        <h3>Улучшенный клик</h3>
-                        <p>+1 к множителю</p>
-                        <p id="clickMultiplierLevel">Уровень: 0</p>
+            </div>
+
+            <div class="upgrades-section premium">
+                <h2 class="section-title">💎 Премиум улучшения</h2>
+                <div class="upgrades-container">
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Золотой кликер</div>
+                            <div class="upgrade-price" id="goldenClickerPrice">1,500</div>
+                        </div>
+                        <div class="upgrade-info">+10 SKURCOIN/клик</div>
+                        <div class="upgrade-level" id="goldenClickerLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyGoldenClicker">Купить</button>
                     </div>
-                    <button id="buyClickMultiplier">Купить: 320</button>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Алмазный множитель</div>
+                            <div class="upgrade-price" id="diamondMultiplierPrice">2,500</div>
+                        </div>
+                        <div class="upgrade-info">+3 к множителю</div>
+                        <div class="upgrade-level" id="diamondMultiplierLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyDiamondMultiplier">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Криптоферма</div>
+                            <div class="upgrade-price" id="cryptoFarmPrice">5,000</div>
+                        </div>
+                        <div class="upgrade-info">+50 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="cryptoFarmLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyCryptoFarm">Купить</button>
+                    </div>
                 </div>
-                <div class="upgrade">
-                    <div>
-                        <h3>Мега кликер</h3>
-                        <p>+5 SKURCOIN/клик</p>
-                        <p id="megaClickerLevel">Уровень: 0</p>
+            </div>
+
+            <div class="upgrades-section property">
+                <h2 class="section-title">🏠 Недвижимость</h2>
+                <div class="upgrades-container">
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Дом</div>
+                            <div class="upgrade-price">50,000</div>
+                        </div>
+                        <div class="upgrade-info">Открывает новые улучшения</div>
+                        <div class="upgrade-level">Содержание: -5,000/5мин</div>
+                        <div class="upgrade-level" id="houseStatus">Не куплено</div>
+                        <button class="upgrade-button" id="buyHouse">Купить</button>
                     </div>
-                    <button id="buyMegaClicker">Купить: 470</button>
+                    
+                    <div class="upgrade" id="clothingUpgrade" style="display: none;">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Одежда</div>
+                            <div class="upgrade-price" id="clothingPrice">10,000</div>
+                        </div>
+                        <div class="upgrade-info">+2 к множителю</div>
+                        <div class="upgrade-level" id="clothingLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyClothing">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade" id="foodUpgrade" style="display: none;">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Еда</div>
+                            <div class="upgrade-price" id="foodPrice">15,000</div>
+                        </div>
+                        <div class="upgrade-info">+5 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="foodLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyFood">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade" id="interiorUpgrade" style="display: none;">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Интерьер</div>
+                            <div class="upgrade-price" id="interiorPrice">25,000</div>
+                        </div>
+                        <div class="upgrade-info">+20 SKURCOIN/клик</div>
+                        <div class="upgrade-level" id="interiorLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyInterior">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Машина</div>
+                            <div class="upgrade-price">300,000</div>
+                        </div>
+                        <div class="upgrade-info">Открывает заправку</div>
+                        <div class="upgrade-level" id="carStatus">Не куплено</div>
+                        <button class="upgrade-button" id="buyCar">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade" id="gasStationUpgrade" style="display: none;">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Заправка</div>
+                            <div class="upgrade-price" id="gasStationPrice">500,000</div>
+                        </div>
+                        <div class="upgrade-info">+10,000 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="gasStationLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyGasStation">Купить</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="tab-content" id="premium-tab">
-            <div class="upgrades">
-                <h2>💎 Премиум</h2>
-                <div class="upgrade premium-upgrade">
-                    <div>
-                        <h3>Золотой кликер</h3>
-                        <p>+10 SKURCOIN/клик</p>
-                        <p id="goldenClickerLevel">Уровень: 0</p>
+        <div class="tab-content" id="business-tab">
+            <div class="upgrades-section business">
+                <h2 class="section-title">🏢 Бизнесы</h2>
+                <div class="upgrades-container">
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Магазин</div>
+                            <div class="upgrade-price" id="shopPrice">450,000</div>
+                        </div>
+                        <div class="upgrade-info">+1,500 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="shopLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyShop">Купить</button>
                     </div>
-                    <button id="buyGoldenClicker">Купить: 1,500</button>
-                </div>
-                <div class="upgrade premium-upgrade">
-                    <div>
-                        <h3>Алмазный множитель</h3>
-                        <p>+3 к множителю</p>
-                        <p id="diamondMultiplierLevel">Уровень: 0</p>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Банк</div>
+                            <div class="upgrade-price" id="bankPrice">1,000,000</div>
+                        </div>
+                        <div class="upgrade-info">+5,000 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="bankLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyBank">Купить</button>
                     </div>
-                    <button id="buyDiamondMultiplier">Купить: 2,500</button>
-                </div>
-                <div class="upgrade premium-upgrade">
-                    <div>
-                        <h3>Криптоферма</h3>
-                        <p>+50 SKURCOIN/сек</p>
-                        <p id="cryptoFarmLevel">Уровень: 0</p>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Торговый центр</div>
+                            <div class="upgrade-price" id="mallPrice">5,000,000</div>
+                        </div>
+                        <div class="upgrade-info">+25,000 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="mallLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyMall">Купить</button>
                     </div>
-                    <button id="buyCryptoFarm">Купить: 5,000</button>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Криптобиржа</div>
+                            <div class="upgrade-price" id="exchangePrice">25,000,000</div>
+                        </div>
+                        <div class="upgrade-info">+150,000 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="exchangeLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyExchange">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">IT Корпорация</div>
+                            <div class="upgrade-price" id="corporationPrice">100,000,000</div>
+                        </div>
+                        <div class="upgrade-info">+750,000 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="corporationLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buyCorporation">Купить</button>
+                    </div>
+                    
+                    <div class="upgrade">
+                        <div class="upgrade-header">
+                            <div class="upgrade-title">Космическая компания</div>
+                            <div class="upgrade-price" id="spaceCompanyPrice">1,000,000,000</div>
+                        </div>
+                        <div class="upgrade-info">+10,000,000 SKURCOIN/сек</div>
+                        <div class="upgrade-level" id="spaceCompanyLevel">Уровень: 0</div>
+                        <button class="upgrade-button" id="buySpaceCompany">Купить</button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="tab-content" id="property-tab">
-            <div class="upgrades">
-                <h2>🏠 Недвижимость</h2>
-                <div class="upgrade">
-                    <div>
-                        <h3>Дом</h3>
-                        <p>Открывает новые улучшения</p>
-                        <p>Содержание: -5,000/5мин</p>
-                        <p id="houseStatus">Не куплено</p>
-                    </div>
-                    <button id="buyHouse">Купить: 50,000</button>
-                </div>
-                <div class="upgrade" id="clothingUpgrade" style="display: none;">
-                    <div>
-                        <h3>Одежда</h3>
-                        <p>+2 к множителю</p>
-                        <p id="clothingLevel">Уровень: 0</p>
-                    </div>
-                    <button id="buyClothing">Купить: 10,000</button>
-                </div>
-                <div class="upgrade" id="foodUpgrade" style="display: none;">
-                    <div>
-                        <h3>Еда</h3>
-                        <p>+5 SKURCOIN/сек</p>
-                        <p id="foodLevel">Уровень: 0</p>
-                    </div>
-                    <button id="buyFood">Купить: 15,000</button>
-                </div>
-                <div class="upgrade" id="interiorUpgrade" style="display: none;">
-                    <div>
-                        <h3>Интерьер</h3>
-                        <p>+20 SKURCOIN/клик</p>
-                        <p id="interiorLevel">Уровень: 0</p>
-                    </div>
-                    <button id="buyInterior">Купить: 25,000</button>
-                </div>
-                <div class="upgrade">
-                    <div>
-                        <h3>Машина</h3>
-                        <p>Открывает заправку</p>
-                        <p id="carStatus">Не куплено</p>
-                    </div>
-                    <button id="buyCar">Купить: 300,000</button>
-                </div>
-                <div class="upgrade" id="gasStationUpgrade" style="display: none;">
-                    <div>
-                        <h3>Заправка</h3>
-                        <p>+10,000 SKURCOIN/сек</p>
-                        <p id="gasStationLevel">Уровень: 0</p>
-                    </div>
-                    <button id="buyGasStation">Купить: 500,000</button>
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2 class="settings-title">Настройки</h2>
+                <button class="close-settings" id="closeSettings">×</button>
+            </div>
+            
+            <div class="settings-option">
+                <h3>Тема</h3>
+                <div class="theme-switcher">
+                    <button class="theme-btn dark-theme-btn active" id="darkThemeBtn">Темная</button>
+                    <button class="theme-btn light-theme-btn" id="lightThemeBtn">Светлая</button>
                 </div>
             </div>
+            
+            <div class="settings-option">
+                <h3>Звуки</h3>
+                <div class="theme-switcher">
+                    <button class="theme-btn active" id="soundOnBtn" style="background: var(--success); color: white;">Вкл</button>
+                    <button class="theme-btn" id="soundOffBtn" style="background: var(--danger); color: white;">Выкл</button>
+                </div>
+            </div>
+            
+            <div class="settings-option">
+                <h3>Эффекты</h3>
+                <div class="theme-switcher">
+                    <button class="theme-btn active" id="effectsOnBtn" style="background: var(--success); color: white;">Вкл</button>
+                    <button class="theme-btn" id="effectsOffBtn" style="background: var(--danger); color: white;">Выкл</button>
+                </div>
+            </div>
+            
+            <button class="reset-btn" id="resetBtn">Сбросить прогресс</button>
+        </div>
+    </div>
+
+    <div class="welcome-modal" id="welcomeModal">
+        <div class="welcome-content">
+            <h2>Добро пожаловать в SKURCOIN Кликер!</h2>
+            <p>Кликай по кнопке, зарабатывай SKURCOIN и улучшай свой кликер!</p>
+            <p>Открывай новые улучшения, бизнесы и перерождайся для увеличения дохода.</p>
+            <p>Подписывайся на наш канал: <a href="https://t.me/skurclickerchannel" target="_blank">@skurclickerchannel</a></p>
+            <p>Приглашай друзей и получай бонусы!</p>
+            <button id="closeWelcome">Начать игру!</button>
         </div>
     </div>
 
@@ -579,6 +1088,8 @@
             clicks: 0,
             baseMultiplier: 1,
             bonusMultiplier: 1,
+            rebirthMultiplier: 1,
+            rebirths: 0,
             autoClickerLevel: 0,
             clickMultiplierLevel: 0,
             megaClickerLevel: 0,
@@ -591,10 +1102,23 @@
             interiorLevel: 0,
             hasCar: false,
             gasStationLevel: 0,
+            shopLevel: 0,
+            bankLevel: 0,
+            mallLevel: 0,
+            exchangeLevel: 0,
+            corporationLevel: 0,
+            spaceCompanyLevel: 0,
             hasReferralBonus: false,
             referredBy: null,
             userId: null,
-            lastHouseDeduction: Date.now()
+            lastHouseDeduction: Date.now(),
+            lastSaveTime: Date.now(),
+            settings: {
+                theme: 'dark',
+                sound: true,
+                effects: true
+            },
+            hasSeenWelcome: false
         };
 
         function initGame() {
@@ -611,25 +1135,111 @@
             updateDisplay();
             initParticles();
             setupTabs();
+            applySettings();
+            
+            // Показываем приветственное окно, если игрок его еще не видел
+            if (!gameState.hasSeenWelcome) {
+                document.getElementById('welcomeModal').style.display = 'flex';
+            }
             
             // Запускаем игровые интервалы
             setInterval(gameLoop, 1000);
             setInterval(houseDeduction, 5 * 60 * 1000); // Каждые 5 минут
+            
+            // Показываем оффлайн доход при загрузке
+            showOfflineIncome();
         }
 
-        function gameLoop() {
-            // Автокликеры
+        function applySettings() {
+            // Применяем тему
+            if (gameState.settings.theme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('lightThemeBtn').classList.add('active');
+                document.getElementById('darkThemeBtn').classList.remove('active');
+            } else {
+                document.body.classList.remove('light-theme');
+                document.getElementById('darkThemeBtn').classList.add('active');
+                document.getElementById('lightThemeBtn').classList.remove('active');
+            }
+            
+            // Применяем настройки звуков и эффектов
+            document.getElementById('soundOnBtn').classList.toggle('active', gameState.settings.sound);
+            document.getElementById('soundOffBtn').classList.toggle('active', !gameState.settings.sound);
+            document.getElementById('effectsOnBtn').classList.toggle('active', gameState.settings.effects);
+            document.getElementById('effectsOffBtn').classList.toggle('active', !gameState.settings.effects);
+        }
+
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Убираем активный класс у всех вкладок и контента
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс к выбранной вкладке и контенту
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+        }
+
+        function showOfflineIncome() {
+            if (gameState.lastSaveTime) {
+                const now = Date.now();
+                const offlineTime = Math.floor((now - gameState.lastSaveTime) / 1000); // В секундах
+                
+                // Максимальное время оффлайн-дохода - 24 часа
+                const maxOfflineTime = 24 * 60 * 60;
+                const actualOfflineTime = Math.min(offlineTime, maxOfflineTime);
+                
+                if (actualOfflineTime > 5) { // Если прошло больше 5 секунд
+                    const incomePerSecond = calculateIncomePerSecond();
+                    const offlineIncome = Math.floor(incomePerSecond * actualOfflineTime * 0.5); // 50% от возможного дохода
+                    
+                    if (offlineIncome > 0) {
+                        gameState.coins += offlineIncome;
+                        
+                        // Форматируем время оффлайна
+                        const hours = Math.floor(actualOfflineTime / 3600);
+                        const minutes = Math.floor((actualOfflineTime % 3600) / 60);
+                        
+                        // Эффект оффлайн дохода
+                        if (gameState.settings.effects) {
+                            const offlineEffect = document.createElement('div');
+                            offlineEffect.className = 'notification';
+                            offlineEffect.innerHTML = `Оффлайн доход (${hours}ч ${minutes}м):<br>+${formatNumber(offlineIncome)} SKURCOIN`;
+                            document.body.appendChild(offlineEffect);
+                            setTimeout(() => offlineEffect.remove(), 5000);
+                        }
+                        
+                        saveProgress();
+                        updateDisplay();
+                    }
+                }
+            }
+        }
+
+        function calculateIncomePerSecond() {
             let income = gameState.autoClickerLevel;
             income += gameState.cryptoFarmLevel * 50;
             income += gameState.foodLevel * 5;
             income += gameState.gasStationLevel * 10000;
+            income += gameState.shopLevel * 1500;
+            income += gameState.bankLevel * 5000;
+            income += gameState.mallLevel * 25000;
+            income += gameState.exchangeLevel * 150000;
+            income += gameState.corporationLevel * 750000;
+            income += gameState.spaceCompanyLevel * 10000000;
+            return income * getMultiplier();
+        }
+
+        function gameLoop() {
+            const incomePerSecond = calculateIncomePerSecond();
+            gameState.coins += incomePerSecond;
             
-            gameState.coins += income * getMultiplier();
-            
-            // Проверяем, достаточно ли денег для покупок
             updateUpgradeButtons();
-            
-            // Обновляем отображение каждую секунду
             updateDisplay();
             saveProgress();
         }
@@ -640,18 +1250,14 @@
                     gameState.coins -= 5000;
                     
                     // Эффект списания
-                    const deductionEffect = document.createElement('div');
-                    deductionEffect.textContent = '-5,000 (содержание дома)';
-                    deductionEffect.style.position = 'fixed';
-                    deductionEffect.style.bottom = '30%';
-                    deductionEffect.style.left = '50%';
-                    deductionEffect.style.transform = 'translateX(-50%)';
-                    deductionEffect.style.color = 'var(--danger)';
-                    deductionEffect.style.fontWeight = 'bold';
-                    deductionEffect.style.fontSize = '1.2rem';
-                    deductionEffect.style.animation = 'float-up 2s forwards';
-                    document.body.appendChild(deductionEffect);
-                    setTimeout(() => deductionEffect.remove(), 2000);
+                    if (gameState.settings.effects) {
+                        const deductionEffect = document.createElement('div');
+                        deductionEffect.className = 'notification';
+                        deductionEffect.textContent = '-5,000 (содержание дома)';
+                        deductionEffect.style.background = 'rgba(225, 112, 85, 0.9)';
+                        document.body.appendChild(deductionEffect);
+                        setTimeout(() => deductionEffect.remove(), 3000);
+                    }
                 } else {
                     // Если денег нет, дом продается
                     gameState.hasHouse = false;
@@ -659,22 +1265,19 @@
                     gameState.foodLevel = 0;
                     gameState.interiorLevel = 0;
                     
-                    const loseHouseEffect = document.createElement('div');
-                    loseHouseEffect.textContent = 'Вы потеряли дом из-за неуплаты!';
-                    loseHouseEffect.style.position = 'fixed';
-                    loseHouseEffect.style.top = '50%';
-                    loseHouseEffect.style.left = '50%';
-                    loseHouseEffect.style.transform = 'translate(-50%, -50%)';
-                    loseHouseEffect.style.backgroundColor = 'rgba(225, 112, 85, 0.9)';
-                    loseHouseEffect.style.color = 'white';
-                    loseHouseEffect.style.padding = '15px 25px';
-                    loseHouseEffect.style.borderRadius = '25px';
-                    loseHouseEffect.style.zIndex = '1000';
-                    loseHouseEffect.style.fontWeight = 'bold';
-                    loseHouseEffect.style.fontSize = '1.2rem';
-                    loseHouseEffect.style.animation = 'fadeOut 3s forwards';
-                    document.body.appendChild(loseHouseEffect);
-                    setTimeout(() => loseHouseEffect.remove(), 3000);
+                    if (gameState.settings.effects) {
+                        const loseHouseEffect = document.createElement('div');
+                        loseHouseEffect.className = 'notification';
+                        loseHouseEffect.textContent = 'Вы потеряли дом из-за неуплаты!';
+                        loseHouseEffect.style.background = 'rgba(225, 112, 85, 0.9)';
+                        document.body.appendChild(loseHouseEffect);
+                        setTimeout(() => loseHouseEffect.remove(), 3000);
+                    }
+                    
+                    // Скрываем улучшения дома
+                    document.getElementById('clothingUpgrade').style.display = 'none';
+                    document.getElementById('foodUpgrade').style.display = 'none';
+                    document.getElementById('interiorUpgrade').style.display = 'none';
                 }
                 updateDisplay();
                 saveProgress();
@@ -682,41 +1285,27 @@
         }
 
         function initParticles() {
+            if (!gameState.settings.effects) return;
+            
             const container = document.getElementById('particles');
-            const particleCount = 30;
+            const particleCount = 20;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.style.position = 'absolute';
-                particle.style.width = Math.random() * 5 + 2 + 'px';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
                 particle.style.height = particle.style.width;
-                particle.style.backgroundColor = `rgba(${Math.floor(Math.random() * 100 + 156)}, ${Math.floor(Math.random() * 100 + 156)}, 255, ${Math.random() * 0.5 + 0.1})`;
+                particle.style.backgroundColor = `rgba(${Math.floor(Math.random() * 100 + 156)}, ${Math.floor(Math.random() * 100 + 156)}, 255, ${Math.random() * 0.3 + 0.1})`;
                 particle.style.borderRadius = '50%';
                 particle.style.top = Math.random() * 100 + 'vh';
                 particle.style.left = Math.random() * 100 + 'vw';
                 
-                const animationDuration = Math.random() * 20 + 10;
+                const animationDuration = Math.random() * 15 + 10;
                 particle.style.animation = `float ${animationDuration}s linear infinite`;
                 particle.style.animationDelay = Math.random() * 10 + 's';
                 
                 container.appendChild(particle);
             }
-        }
-
-        function setupTabs() {
-            const tabs = document.querySelectorAll('.tab-button');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Убираем активный класс у всех кнопок и контента
-                    document.querySelectorAll('.tab-button').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    
-                    // Добавляем активный класс текущей кнопке и соответствующему контенту
-                    tab.classList.add('active');
-                    const tabId = tab.getAttribute('data-tab');
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
-                });
-            });
         }
 
         function processStartParam() {
@@ -741,21 +1330,13 @@
                 setTimeout(() => btn.textContent = 'Копировать ссылку', 2000);
                 
                 // Эффект при копировании
-                const copyEffect = document.createElement('div');
-                copyEffect.textContent = 'Скопировано!';
-                copyEffect.style.position = 'fixed';
-                copyEffect.style.top = '50%';
-                copyEffect.style.left = '50%';
-                copyEffect.style.transform = 'translate(-50%, -50%)';
-                copyEffect.style.backgroundColor = 'rgba(0, 184, 148, 0.9)';
-                copyEffect.style.color = 'white';
-                copyEffect.style.padding = '10px 20px';
-                copyEffect.style.borderRadius = '20px';
-                copyEffect.style.zIndex = '1000';
-                copyEffect.style.fontWeight = 'bold';
-                copyEffect.style.animation = 'fadeOut 2s forwards';
-                document.body.appendChild(copyEffect);
-                setTimeout(() => copyEffect.remove(), 2000);
+                if (gameState.settings.effects) {
+                    const copyEffect = document.createElement('div');
+                    copyEffect.className = 'notification';
+                    copyEffect.textContent = 'Ссылка скопирована!';
+                    document.body.appendChild(copyEffect);
+                    setTimeout(() => copyEffect.remove(), 2000);
+                }
             };
         }
 
@@ -765,22 +1346,14 @@
             document.getElementById('referralStatus').textContent = '✅ Вы получили x3 множитель!';
             
             // Эффект при получении бонуса
-            const bonusEffect = document.createElement('div');
-            bonusEffect.textContent = 'x3 Множитель активирован! 🎁';
-            bonusEffect.style.position = 'fixed';
-            bonusEffect.style.top = '50%';
-            bonusEffect.style.left = '50%';
-            bonusEffect.style.transform = 'translate(-50%, -50%)';
-            bonusEffect.style.backgroundColor = 'rgba(253, 121, 168, 0.9)';
-            bonusEffect.style.color = 'white';
-            bonusEffect.style.padding = '15px 25px';
-            bonusEffect.style.borderRadius = '25px';
-            bonusEffect.style.zIndex = '1000';
-            bonusEffect.style.fontWeight = 'bold';
-            bonusEffect.style.fontSize = '1.2rem';
-            bonusEffect.style.animation = 'fadeOut 3s forwards';
-            document.body.appendChild(bonusEffect);
-            setTimeout(() => bonusEffect.remove(), 3000);
+            if (gameState.settings.effects) {
+                const bonusEffect = document.createElement('div');
+                bonusEffect.className = 'notification';
+                bonusEffect.textContent = 'x3 Множитель активирован! 🎁';
+                bonusEffect.style.background = 'rgba(253, 121, 168, 0.9)';
+                document.body.appendChild(bonusEffect);
+                setTimeout(() => bonusEffect.remove(), 3000);
+            }
             
             saveProgress();
             updateDisplay();
@@ -795,21 +1368,25 @@
                 gameState.clicks++;
 
                 // Эффект клика (круг)
-                const clickEffect = document.createElement('div');
-                clickEffect.className = 'click-effect';
-                clickEffect.style.animation = 'click-animation 0.5s forwards';
-                clicker.appendChild(clickEffect);
-                setTimeout(() => clickEffect.remove(), 500);
+                if (gameState.settings.effects) {
+                    const clickEffect = document.createElement('div');
+                    clickEffect.className = 'click-effect';
+                    clickEffect.style.animation = 'click-animation 0.5s forwards';
+                    clicker.appendChild(clickEffect);
+                    setTimeout(() => clickEffect.remove(), 500);
+                }
 
                 // Эффект монетки
-                const coin = document.createElement('div');
-                coin.className = 'coin-effect';
-                coin.textContent = `+${value}`;
-                const rect = e.target.getBoundingClientRect();
-                coin.style.left = `${e.clientX - rect.left}px`;
-                coin.style.top = `${e.clientY - rect.top}px`;
-                clicker.appendChild(coin);
-                setTimeout(() => coin.remove(), 1000);
+                if (gameState.settings.effects) {
+                    const coin = document.createElement('div');
+                    coin.className = 'coin-effect';
+                    coin.textContent = `+${value}`;
+                    const rect = e.target.getBoundingClientRect();
+                    coin.style.left = `${e.clientX - rect.left}px`;
+                    coin.style.top = `${e.clientY - rect.top}px`;
+                    clicker.appendChild(coin);
+                    setTimeout(() => coin.remove(), 1000);
+                }
 
                 // Эффект нажатия
                 clicker.style.transform = 'scale(0.95)';
@@ -823,7 +1400,7 @@
             document.getElementById('buyAutoClicker').addEventListener('click', () =>
                 buyUpgrade('autoClicker', 270, 200));
             document.getElementById('buyClickMultiplier').addEventListener('click', () =>
-                buyUpgrade('clickMultiplier', 320, 200, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel));
+                buyUpgrade('clickMultiplier', 320, 200, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel + gameState.diamondMultiplierLevel * 3 + gameState.clothingLevel * 2));
             document.getElementById('buyMegaClicker').addEventListener('click', () =>
                 buyUpgrade('megaClicker', 470, 200));
             
@@ -831,7 +1408,7 @@
             document.getElementById('buyGoldenClicker').addEventListener('click', () =>
                 buyUpgrade('goldenClicker', 1500, 500));
             document.getElementById('buyDiamondMultiplier').addEventListener('click', () =>
-                buyUpgrade('diamondMultiplier', 2500, 800, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel + gameState.diamondMultiplierLevel * 3));
+                buyUpgrade('diamondMultiplier', 2500, 800, () => gameState.baseMultiplier = 1 + gameState.clickMultiplierLevel + gameState.diamondMultiplierLevel * 3 + gameState.clothingLevel * 2));
             document.getElementById('buyCryptoFarm').addEventListener('click', () =>
                 buyUpgrade('cryptoFarm', 5000, 1500));
             
@@ -848,22 +1425,14 @@
                     document.getElementById('interiorUpgrade').style.display = 'flex';
                     
                     // Эффект покупки дома
-                    const houseEffect = document.createElement('div');
-                    houseEffect.textContent = '🏠 Вы купили дом! Доступны новые улучшения!';
-                    houseEffect.style.position = 'fixed';
-                    houseEffect.style.top = '50%';
-                    houseEffect.style.left = '50%';
-                    houseEffect.style.transform = 'translate(-50%, -50%)';
-                    houseEffect.style.backgroundColor = 'rgba(0, 184, 148, 0.9)';
-                    houseEffect.style.color = 'white';
-                    houseEffect.style.padding = '15px 25px';
-                    houseEffect.style.borderRadius = '25px';
-                    houseEffect.style.zIndex = '1000';
-                    houseEffect.style.fontWeight = 'bold';
-                    houseEffect.style.fontSize = '1.2rem';
-                    houseEffect.style.animation = 'fadeOut 3s forwards';
-                    document.body.appendChild(houseEffect);
-                    setTimeout(() => houseEffect.remove(), 3000);
+                    if (gameState.settings.effects) {
+                        const houseEffect = document.createElement('div');
+                        houseEffect.className = 'notification';
+                        houseEffect.textContent = '🏠 Вы купили дом! Доступны новые улучшения!';
+                        houseEffect.style.background = 'rgba(0, 184, 148, 0.9)';
+                        document.body.appendChild(houseEffect);
+                        setTimeout(() => houseEffect.remove(), 3000);
+                    }
                     
                     saveProgress();
                     updateDisplay();
@@ -890,22 +1459,14 @@
                     document.getElementById('gasStationUpgrade').style.display = 'flex';
                     
                     // Эффект покупки машины
-                    const carEffect = document.createElement('div');
-                    carEffect.textContent = '🚗 Вы купили машину! Теперь можно купить заправку!';
-                    carEffect.style.position = 'fixed';
-                    carEffect.style.top = '50%';
-                    carEffect.style.left = '50%';
-                    carEffect.style.transform = 'translate(-50%, -50%)';
-                    carEffect.style.backgroundColor = 'rgba(108, 92, 231, 0.9)';
-                    carEffect.style.color = 'white';
-                    carEffect.style.padding = '15px 25px';
-                    carEffect.style.borderRadius = '25px';
-                    carEffect.style.zIndex = '1000';
-                    carEffect.style.fontWeight = 'bold';
-                    carEffect.style.fontSize = '1.2rem';
-                    carEffect.style.animation = 'fadeOut 3s forwards';
-                    document.body.appendChild(carEffect);
-                    setTimeout(() => carEffect.remove(), 3000);
+                    if (gameState.settings.effects) {
+                        const carEffect = document.createElement('div');
+                        carEffect.className = 'notification';
+                        carEffect.textContent = '🚗 Вы купили машину! Теперь можно купить заправку!';
+                        carEffect.style.background = 'rgba(108, 92, 231, 0.9)';
+                        document.body.appendChild(carEffect);
+                        setTimeout(() => carEffect.remove(), 3000);
+                    }
                     
                     saveProgress();
                     updateDisplay();
@@ -916,6 +1477,234 @@
             
             document.getElementById('buyGasStation').addEventListener('click', () =>
                 buyUpgrade('gasStation', 500000, 200000));
+            
+            // Бизнесы
+            document.getElementById('buyShop').addEventListener('click', () =>
+                buyUpgrade('shop', 450000, 200000));
+            
+            document.getElementById('buyBank').addEventListener('click', () =>
+                buyUpgrade('bank', 1000000, 500000));
+            
+            document.getElementById('buyMall').addEventListener('click', () =>
+                buyUpgrade('mall', 5000000, 2500000));
+            
+            document.getElementById('buyExchange').addEventListener('click', () =>
+                buyUpgrade('exchange', 25000000, 12500000));
+            
+            document.getElementById('buyCorporation').addEventListener('click', () =>
+                buyUpgrade('corporation', 100000000, 50000000));
+            
+            document.getElementById('buySpaceCompany').addEventListener('click', () =>
+                buyUpgrade('spaceCompany', 1000000000, 500000000));
+            
+            // Кнопка перерождения сверху
+            document.getElementById('rebirthBtnTop').addEventListener('click', () => {
+                showRebirthModal();
+            });
+            
+            // Настройки
+            document.getElementById('settingsBtn').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.add('active');
+            });
+            
+            document.getElementById('closeSettings').addEventListener('click', () => {
+                document.getElementById('settingsModal').classList.remove('active');
+            });
+            
+            document.getElementById('darkThemeBtn').addEventListener('click', () => {
+                gameState.settings.theme = 'dark';
+                document.body.classList.remove('light-theme');
+                document.getElementById('darkThemeBtn').classList.add('active');
+                document.getElementById('lightThemeBtn').classList.remove('active');
+                saveProgress();
+            });
+            
+            document.getElementById('lightThemeBtn').addEventListener('click', () => {
+                gameState.settings.theme = 'light';
+                document.body.classList.add('light-theme');
+                document.getElementById('lightThemeBtn').classList.add('active');
+                document.getElementById('darkThemeBtn').classList.remove('active');
+                saveProgress();
+            });
+            
+            document.getElementById('soundOnBtn').addEventListener('click', () => {
+                gameState.settings.sound = true;
+                document.getElementById('soundOnBtn').classList.add('active');
+                document.getElementById('soundOffBtn').classList.remove('active');
+                saveProgress();
+            });
+            
+            document.getElementById('soundOffBtn').addEventListener('click', () => {
+                gameState.settings.sound = false;
+                document.getElementById('soundOffBtn').classList.add('active');
+                document.getElementById('soundOnBtn').classList.remove('active');
+                saveProgress();
+            });
+            
+            document.getElementById('effectsOnBtn').addEventListener('click', () => {
+                gameState.settings.effects = true;
+                document.getElementById('effectsOnBtn').classList.add('active');
+                document.getElementById('effectsOffBtn').classList.remove('active');
+                initParticles();
+                saveProgress();
+            });
+            
+            document.getElementById('effectsOffBtn').addEventListener('click', () => {
+                gameState.settings.effects = false;
+                document.getElementById('effectsOffBtn').classList.add('active');
+                document.getElementById('effectsOnBtn').classList.remove('active');
+                document.getElementById('particles').innerHTML = '';
+                saveProgress();
+            });
+            
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                if (confirm('Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить!')) {
+                    localStorage.removeItem(`skurcoin_${gameState.userId}`);
+                    location.reload();
+                }
+            });
+            
+            // Приветственное окно
+            document.getElementById('closeWelcome').addEventListener('click', () => {
+                document.getElementById('welcomeModal').style.display = 'none';
+                gameState.hasSeenWelcome = true;
+                saveProgress();
+            });
+        }
+
+        function showRebirthModal() {
+            const modal = document.createElement('div');
+            modal.className = 'settings-modal active';
+            modal.innerHTML = `
+                <div class="settings-content">
+                    <div class="settings-header">
+                        <h2 class="settings-title">🔥 Перерождение</h2>
+                        <button class="close-settings" id="closeRebirthModal">×</button>
+                    </div>
+                    
+                    <div class="upgrades-container">
+                        <div class="upgrade">
+                            <div class="upgrade-header">
+                                <div class="upgrade-title">Первое перерождение</div>
+                                <div class="upgrade-price">100,000,000</div>
+                            </div>
+                            <div class="upgrade-info">Требуется: 100M SKURCOIN</div>
+                            <div class="upgrade-info">Бонус: x2 множитель дохода</div>
+                            <button class="rebirth-button" id="rebirth1" ${gameState.coins < 100000000 ? 'disabled' : ''}>
+                                Переродиться
+                            </button>
+                        </div>
+                        
+                        <div class="upgrade">
+                            <div class="upgrade-header">
+                                <div class="upgrade-title">Второе перерождение</div>
+                                <div class="upgrade-price">500,000,000</div>
+                            </div>
+                            <div class="upgrade-info">Требуется: 500M SKURCOIN</div>
+                            <div class="upgrade-info">Бонус: x5 множитель дохода</div>
+                            <button class="rebirth-button" id="rebirth2" ${gameState.coins < 500000000 ? 'disabled' : ''}>
+                                Переродиться
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="rebirth-status">Текущий множитель перерождения: x${gameState.rebirthMultiplier}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Обработчики событий для кнопок перерождения
+            modal.querySelector('#rebirth1').addEventListener('click', () => {
+                rebirth(100000000, 2);
+                modal.remove();
+            });
+            
+            modal.querySelector('#rebirth2').addEventListener('click', () => {
+                rebirth(500000000, 5);
+                modal.remove();
+            });
+            
+            // Кнопка закрытия
+            modal.querySelector('#closeRebirthModal').addEventListener('click', () => {
+                modal.remove();
+            });
+        }
+
+        function rebirth(requiredCoins, multiplierBonus) {
+            if (gameState.coins >= requiredCoins) {
+                // Сброс прогресса
+                const oldState = {
+                    rebirthMultiplier: gameState.rebirthMultiplier,
+                    rebirths: gameState.rebirths,
+                    hasReferralBonus: gameState.hasReferralBonus,
+                    referredBy: gameState.referredBy,
+                    userId: gameState.userId,
+                    settings: gameState.settings
+                };
+                
+                // Создаем новое состояние с сохранением только нужных данных
+                gameState = {
+                    coins: 0,
+                    clicks: 0,
+                    baseMultiplier: 1,
+                    bonusMultiplier: oldState.hasReferralBonus ? 3 : 1,
+                    rebirthMultiplier: oldState.rebirthMultiplier * multiplierBonus,
+                    rebirths: oldState.rebirths + 1,
+                    autoClickerLevel: 0,
+                    clickMultiplierLevel: 0,
+                    megaClickerLevel: 0,
+                    goldenClickerLevel: 0,
+                    diamondMultiplierLevel: 0,
+                    cryptoFarmLevel: 0,
+                    hasHouse: false,
+                    clothingLevel: 0,
+                    foodLevel: 0,
+                    interiorLevel: 0,
+                    hasCar: false,
+                    gasStationLevel: 0,
+                    shopLevel: 0,
+                    bankLevel: 0,
+                    mallLevel: 0,
+                    exchangeLevel: 0,
+                    corporationLevel: 0,
+                    spaceCompanyLevel: 0,
+                    hasReferralBonus: oldState.hasReferralBonus,
+                    referredBy: oldState.referredBy,
+                    userId: oldState.userId,
+                    settings: oldState.settings,
+                    lastHouseDeduction: Date.now(),
+                    lastSaveTime: Date.now(),
+                    hasSeenWelcome: true
+                };
+                
+                // Обновляем изображение кликера в зависимости от уровня перерождения
+                const clicker = document.getElementById('clicker');
+                if (gameState.rebirths === 1) {
+                    clicker.style.backgroundImage = "url('https://i.ibb.co/SwDmpvGW/Untitled36-20250721002702.png')";
+                } else {
+                    clicker.style.backgroundImage = "url('https://i.ibb.co/nMW8JFSf/Untitled36-20250721002408.png')";
+                }
+                
+                // Скрываем улучшения
+                document.getElementById('clothingUpgrade').style.display = 'none';
+                document.getElementById('foodUpgrade').style.display = 'none';
+                document.getElementById('interiorUpgrade').style.display = 'none';
+                document.getElementById('gasStationUpgrade').style.display = 'none';
+                
+                // Эффект перерождения
+                if (gameState.settings.effects) {
+                    const rebirthEffect = document.createElement('div');
+                    rebirthEffect.className = 'notification';
+                    rebirthEffect.innerHTML = `🔥 Перерождение ${gameState.rebirths}!<br>Вы получили x${multiplierBonus} множитель!<br>Общий множитель: x${gameState.rebirthMultiplier}`;
+                    rebirthEffect.style.background = 'rgba(253, 203, 110, 0.9)';
+                    document.body.appendChild(rebirthEffect);
+                    setTimeout(() => rebirthEffect.remove(), 5000);
+                }
+                
+                saveProgress();
+                updateDisplay();
+            }
         }
 
         function buyUpgrade(type, baseCost, costIncrease, onBuy) {
@@ -926,22 +1715,15 @@
                 if (onBuy) onBuy();
                 
                 // Эффект покупки
-                const upgradeName = document.getElementById(`${type}Level`).parentElement.querySelector('h3').textContent;
-                const purchaseEffect = document.createElement('div');
-                purchaseEffect.textContent = `${upgradeName} улучшен! 🚀`;
-                purchaseEffect.style.position = 'fixed';
-                purchaseEffect.style.bottom = '20%';
-                purchaseEffect.style.left = '50%';
-                purchaseEffect.style.transform = 'translateX(-50%)';
-                purchaseEffect.style.backgroundColor = 'rgba(108, 92, 231, 0.9)';
-                purchaseEffect.style.color = 'white';
-                purchaseEffect.style.padding = '10px 20px';
-                purchaseEffect.style.borderRadius = '20px';
-                purchaseEffect.style.zIndex = '1000';
-                purchaseEffect.style.fontWeight = 'bold';
-                purchaseEffect.style.animation = 'fadeOut 2s forwards';
-                document.body.appendChild(purchaseEffect);
-                setTimeout(() => purchaseEffect.remove(), 2000);
+                if (gameState.settings.effects) {
+                    const upgradeName = document.getElementById(`${type}Level`).parentElement.querySelector('.upgrade-title').textContent;
+                    const purchaseEffect = document.createElement('div');
+                    purchaseEffect.className = 'notification';
+                    purchaseEffect.textContent = `${upgradeName} улучшен! 🚀`;
+                    purchaseEffect.style.background = 'rgba(108, 92, 231, 0.9)';
+                    document.body.appendChild(purchaseEffect);
+                    setTimeout(() => purchaseEffect.remove(), 2000);
+                }
                 
                 saveProgress();
                 updateDisplay();
@@ -952,25 +1734,18 @@
 
         function showNotEnoughEffect() {
             // Эффект недостаточно денег
-            const notEnoughEffect = document.createElement('div');
-            notEnoughEffect.textContent = 'Недостаточно SKURCOIN! 😢';
-            notEnoughEffect.style.position = 'fixed';
-            notEnoughEffect.style.bottom = '20%';
-            notEnoughEffect.style.left = '50%';
-            notEnoughEffect.style.transform = 'translateX(-50%)';
-            notEnoughEffect.style.backgroundColor = 'rgba(255, 99, 71, 0.9)';
-            notEnoughEffect.style.color = 'white';
-            notEnoughEffect.style.padding = '10px 20px';
-            notEnoughEffect.style.borderRadius = '20px';
-            notEnoughEffect.style.zIndex = '1000';
-            notEnoughEffect.style.fontWeight = 'bold';
-            notEnoughEffect.style.animation = 'fadeOut 2s forwards';
-            document.body.appendChild(notEnoughEffect);
-            setTimeout(() => notEnoughEffect.remove(), 2000);
+            if (gameState.settings.effects) {
+                const notEnoughEffect = document.createElement('div');
+                notEnoughEffect.className = 'notification';
+                notEnoughEffect.textContent = 'Недостаточно SKURCOIN! 😢';
+                notEnoughEffect.style.background = 'rgba(255, 99, 71, 0.9)';
+                document.body.appendChild(notEnoughEffect);
+                setTimeout(() => notEnoughEffect.remove(), 2000);
+            }
         }
 
         function getMultiplier() {
-            return gameState.baseMultiplier * gameState.bonusMultiplier;
+            return gameState.baseMultiplier * gameState.bonusMultiplier * gameState.rebirthMultiplier;
         }
 
         function updateDisplay() {
@@ -980,14 +1755,10 @@
             document.getElementById('coins').textContent = `${formatNumber(Math.floor(gameState.coins))} SKURCOIN`;
             document.getElementById('clicks').textContent = formatNumber(gameState.clicks);
             document.getElementById('multiplier').textContent = `x${getMultiplier()}${gameState.hasReferralBonus ? ' (x3 реф)' : ''}`;
+            document.getElementById('rebirths').textContent = gameState.rebirths;
             
             // Рассчитываем доход в секунду
-            let incomePerSecond = gameState.autoClickerLevel;
-            incomePerSecond += gameState.cryptoFarmLevel * 50;
-            incomePerSecond += gameState.foodLevel * 5;
-            incomePerSecond += gameState.gasStationLevel * 10000;
-            incomePerSecond *= getMultiplier();
-            
+            const incomePerSecond = calculateIncomePerSecond();
             document.getElementById('cps').textContent = `${formatNumber(incomePerSecond)} SKURCOIN/сек`;
 
             // Базовые улучшения
@@ -995,27 +1766,27 @@
             document.getElementById('clickMultiplierLevel').textContent = `Уровень: ${gameState.clickMultiplierLevel}`;
             document.getElementById('megaClickerLevel').textContent = `Уровень: ${gameState.megaClickerLevel}`;
             
-            document.getElementById('buyAutoClicker').textContent = `Купить: ${formatNumber(270 + (gameState.autoClickerLevel * 200))}`;
-            document.getElementById('buyClickMultiplier').textContent = `Купить: ${formatNumber(320 + (gameState.clickMultiplierLevel * 200))}`;
-            document.getElementById('buyMegaClicker').textContent = `Купить: ${formatNumber(470 + (gameState.megaClickerLevel * 200))}`;
+            document.getElementById('autoClickerPrice').textContent = formatNumber(270 + (gameState.autoClickerLevel * 200));
+            document.getElementById('clickMultiplierPrice').textContent = formatNumber(320 + (gameState.clickMultiplierLevel * 200));
+            document.getElementById('megaClickerPrice').textContent = formatNumber(470 + (gameState.megaClickerLevel * 200));
             
             // Премиум улучшения
             document.getElementById('goldenClickerLevel').textContent = `Уровень: ${gameState.goldenClickerLevel}`;
             document.getElementById('diamondMultiplierLevel').textContent = `Уровень: ${gameState.diamondMultiplierLevel}`;
             document.getElementById('cryptoFarmLevel').textContent = `Уровень: ${gameState.cryptoFarmLevel}`;
             
-            document.getElementById('buyGoldenClicker').textContent = `Купить: ${formatNumber(1500 + (gameState.goldenClickerLevel * 500))}`;
-            document.getElementById('buyDiamondMultiplier').textContent = `Купить: ${formatNumber(2500 + (gameState.diamondMultiplierLevel * 800))}`;
-            document.getElementById('buyCryptoFarm').textContent = `Купить: ${formatNumber(5000 + (gameState.cryptoFarmLevel * 1500))}`;
+            document.getElementById('goldenClickerPrice').textContent = formatNumber(1500 + (gameState.goldenClickerLevel * 500));
+            document.getElementById('diamondMultiplierPrice').textContent = formatNumber(2500 + (gameState.diamondMultiplierLevel * 800));
+            document.getElementById('cryptoFarmPrice').textContent = formatNumber(5000 + (gameState.cryptoFarmLevel * 1500));
             
             // Недвижимость
             document.getElementById('houseStatus').textContent = gameState.hasHouse ? 'Куплено' : 'Не куплено';
             document.getElementById('carStatus').textContent = gameState.hasCar ? 'Куплено' : 'Не куплено';
             
-            document.getElementById('buyHouse').textContent = gameState.hasHouse ? 'Уже куплено' : `Купить: 50,000`;
+            document.getElementById('buyHouse').textContent = gameState.hasHouse ? 'Уже куплено' : 'Купить';
             document.getElementById('buyHouse').disabled = gameState.hasHouse || gameState.coins < 50000;
             
-            document.getElementById('buyCar').textContent = gameState.hasCar ? 'Уже куплено' : `Купить: 300,000`;
+            document.getElementById('buyCar').textContent = gameState.hasCar ? 'Уже куплено' : 'Купить';
             document.getElementById('buyCar').disabled = gameState.hasCar || gameState.coins < 300000;
             
             // Улучшения дома
@@ -1024,16 +1795,31 @@
                 document.getElementById('foodLevel').textContent = `Уровень: ${gameState.foodLevel}`;
                 document.getElementById('interiorLevel').textContent = `Уровень: ${gameState.interiorLevel}`;
                 
-                document.getElementById('buyClothing').textContent = `Купить: ${formatNumber(10000 + (gameState.clothingLevel * 3000))}`;
-                document.getElementById('buyFood').textContent = `Купить: ${formatNumber(15000 + (gameState.foodLevel * 5000))}`;
-                document.getElementById('buyInterior').textContent = `Купить: ${formatNumber(25000 + (gameState.interiorLevel * 8000))}`;
+                document.getElementById('clothingPrice').textContent = formatNumber(10000 + (gameState.clothingLevel * 3000));
+                document.getElementById('foodPrice').textContent = formatNumber(15000 + (gameState.foodLevel * 5000));
+                document.getElementById('interiorPrice').textContent = formatNumber(25000 + (gameState.interiorLevel * 8000));
             }
             
             // Заправка
             if (gameState.hasCar) {
                 document.getElementById('gasStationLevel').textContent = `Уровень: ${gameState.gasStationLevel}`;
-                document.getElementById('buyGasStation').textContent = `Купить: ${formatNumber(500000 + (gameState.gasStationLevel * 200000))}`;
+                document.getElementById('gasStationPrice').textContent = formatNumber(500000 + (gameState.gasStationLevel * 200000));
             }
+            
+            // Бизнесы
+            document.getElementById('shopLevel').textContent = `Уровень: ${gameState.shopLevel}`;
+            document.getElementById('bankLevel').textContent = `Уровень: ${gameState.bankLevel}`;
+            document.getElementById('mallLevel').textContent = `Уровень: ${gameState.mallLevel}`;
+            document.getElementById('exchangeLevel').textContent = `Уровень: ${gameState.exchangeLevel}`;
+            document.getElementById('corporationLevel').textContent = `Уровень: ${gameState.corporationLevel}`;
+            document.getElementById('spaceCompanyLevel').textContent = `Уровень: ${gameState.spaceCompanyLevel}`;
+            
+            document.getElementById('shopPrice').textContent = formatNumber(450000 + (gameState.shopLevel * 200000));
+            document.getElementById('bankPrice').textContent = formatNumber(1000000 + (gameState.bankLevel * 500000));
+            document.getElementById('mallPrice').textContent = formatNumber(5000000 + (gameState.mallLevel * 2500000));
+            document.getElementById('exchangePrice').textContent = formatNumber(25000000 + (gameState.exchangeLevel * 12500000));
+            document.getElementById('corporationPrice').textContent = formatNumber(100000000 + (gameState.corporationLevel * 50000000));
+            document.getElementById('spaceCompanyPrice').textContent = formatNumber(1000000000 + (gameState.spaceCompanyLevel * 500000000));
             
             updateUpgradeButtons();
         }
@@ -1070,10 +1856,28 @@
                 document.getElementById('buyGasStation').disabled =
                     gameState.coins < (500000 + (gameState.gasStationLevel * 200000));
             }
+            
+            // Бизнесы
+            document.getElementById('buyShop').disabled =
+                gameState.coins < (450000 + (gameState.shopLevel * 200000));
+            document.getElementById('buyBank').disabled =
+                gameState.coins < (1000000 + (gameState.bankLevel * 500000));
+            document.getElementById('buyMall').disabled =
+                gameState.coins < (5000000 + (gameState.mallLevel * 2500000));
+            document.getElementById('buyExchange').disabled =
+                gameState.coins < (25000000 + (gameState.exchangeLevel * 12500000));
+            document.getElementById('buyCorporation').disabled =
+                gameState.coins < (100000000 + (gameState.corporationLevel * 50000000));
+            document.getElementById('buySpaceCompany').disabled =
+                gameState.coins < (1000000000 + (gameState.spaceCompanyLevel * 500000000));
         }
 
         function saveProgress() {
             if (!gameState.userId) return;
+            
+            // Обновляем время последнего сохранения
+            gameState.lastSaveTime = Date.now();
+            
             localStorage.setItem(`skurcoin_${gameState.userId}`, JSON.stringify(gameState));
         }
 
@@ -1082,7 +1886,23 @@
             const saved = localStorage.getItem(`skurcoin_${gameState.userId}`);
             if (saved) {
                 try {
-                    Object.assign(gameState, JSON.parse(saved));
+                    const savedState = JSON.parse(saved);
+                    
+                    // Сохраняем время последнего сохранения из загруженных данных
+                    if (savedState.lastSaveTime) {
+                        gameState.lastSaveTime = savedState.lastSaveTime;
+                    }
+                    
+                    // Загружаем остальные параметры
+                    Object.assign(gameState, savedState);
+                    
+                    // Обновляем изображение кликера в зависимости от уровня перерождения
+                    const clicker = document.getElementById('clicker');
+                    if (gameState.rebirths >= 1) {
+                        clicker.style.backgroundImage = "url('https://i.ibb.co/SwDmpvGW/Untitled36-20250721002702.png')";
+                    } else {
+                        clicker.style.backgroundImage = "url('https://i.ibb.co/nMW8JFSf/Untitled36-20250721002408.png')";
+                    }
                     
                     // Показываем скрытые улучшения, если они были куплены
                     if (gameState.hasHouse) {
@@ -1102,6 +1922,10 @@
                     console.error('Ошибка загрузки:', e);
                 }
             }
+        }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
         document.addEventListener('DOMContentLoaded', initGame);
