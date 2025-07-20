@@ -180,12 +180,9 @@
     </div>
 
     <script>
-        // Конфигурация бота
-        const BOT_TOKEN = '8113087097:AAE6Fk19ESCGfFEc7xUfbKP3vkzmYvtQnoY';
         const BOT_USERNAME = 'skurclickerbot';
         const tg = window.Telegram.WebApp;
 
-        // Game state
         let gameState = {
             coins: 0,
             clicks: 0,
@@ -200,7 +197,6 @@
             userId: null
         };
 
-        // Генератор кодов
         function generateReferralCode() {
             const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
             let code = '';
@@ -210,50 +206,47 @@
             return code;
         }
 
-        // Инициализация
         function initGame() {
             // Получаем ID пользователя
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            if (tg.initDataUnsafe?.user?.id) {
                 gameState.userId = tg.initDataUnsafe.user.id.toString();
             } else {
-                // Для локального тестирования
                 gameState.userId = 'local_' + Math.random().toString(36).substr(2, 9);
             }
 
-            // Загружаем прогресс
             loadProgress();
 
-            // Генерируем реферальный код если его нет
             if (!gameState.referralCode) {
                 gameState.referralCode = generateReferralCode();
                 saveProgress();
             }
 
-            // Проверяем реферальный код из параметра start
-            if (tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
-                const refCode = tg.initDataUnsafe.start_param;
-                if (refCode !== gameState.referralCode && !gameState.hasReferralBonus) {
-                    gameState.referredBy = refCode;
-                    applyReferralBonus();
-                }
-            }
-
+            processStartParam();
             updateReferralLink();
             setupEventListeners();
             updateDisplay();
         }
 
-        // Реферальные функции
+        function processStartParam() {
+            const startParam = tg.initDataUnsafe?.start_param;
+            if (startParam && startParam !== gameState.referralCode && !gameState.referredBy) {
+                gameState.referredBy = startParam;
+                if (!gameState.hasReferralBonus) {
+                    applyReferralBonus();
+                }
+            }
+        }
+
         function updateReferralLink() {
             const link = `https://t.me/${BOT_USERNAME}?start=${gameState.referralCode}`;
             document.getElementById('referralLink').textContent = link;
             
-            document.getElementById('copyReferralBtn').addEventListener('click', () => {
+            document.getElementById('copyReferralBtn').onclick = () => {
                 navigator.clipboard.writeText(link);
                 const btn = document.getElementById('copyReferralBtn');
                 btn.textContent = 'Скопировано!';
                 setTimeout(() => btn.textContent = 'Копировать ссылку', 2000);
-            });
+            };
         }
 
         function applyReferralBonus() {
@@ -264,14 +257,12 @@
             updateDisplay();
         }
 
-        // Игровой процесс
         function setupEventListeners() {
             document.getElementById('clicker').addEventListener('click', (e) => {
                 const value = (1 + gameState.megaClickerLevel * 5) * getMultiplier();
                 gameState.coins += value;
                 gameState.clicks++;
                 
-                // Эффект клика
                 const coin = document.createElement('div');
                 coin.className = 'coin-effect';
                 coin.textContent = `+${value}`;
@@ -304,7 +295,6 @@
             }
         }
 
-        // Вспомогательные функции
         function getMultiplier() {
             return gameState.baseMultiplier * gameState.bonusMultiplier;
         }
@@ -335,28 +325,26 @@
                 gameState.coins < (470 + (gameState.megaClickerLevel * 200));
         }
 
-        // Сохранение/загрузка
         function saveProgress() {
             if (!gameState.userId) return;
-            const saveKey = `skurcoin_${gameState.userId}`;
-            localStorage.setItem(saveKey, JSON.stringify(gameState));
+            localStorage.setItem(`skurcoin_${gameState.userId}`, JSON.stringify(gameState));
         }
 
         function loadProgress() {
             if (!gameState.userId) return;
-            const saveKey = `skurcoin_${gameState.userId}`;
-            const saved = localStorage.getItem(saveKey);
+            const saved = localStorage.getItem(`skurcoin_${gameState.userId}`);
             if (saved) {
-                const parsed = JSON.parse(saved);
-                Object.assign(gameState, parsed);
-                
-                if (gameState.hasReferralBonus) {
-                    document.getElementById('referralStatus').textContent = '✅ У вас есть x3 множитель';
+                try {
+                    Object.assign(gameState, JSON.parse(saved));
+                    if (gameState.hasReferralBonus) {
+                        document.getElementById('referralStatus').textContent = '✅ У вас есть x3 множитель';
+                    }
+                } catch (e) {
+                    console.error('Ошибка загрузки:', e);
                 }
             }
         }
 
-        // Автокликер
         setInterval(() => {
             if (gameState.autoClickerLevel > 0) {
                 gameState.coins += gameState.autoClickerLevel * getMultiplier();
@@ -365,7 +353,6 @@
             }
         }, 1000);
 
-        // Запуск
         document.addEventListener('DOMContentLoaded', initGame);
     </script>
 </body>
