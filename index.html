@@ -196,7 +196,8 @@
             megaClickerLevel: 0,
             hasReferralBonus: false,
             referralCode: null,
-            referredBy: null
+            referredBy: null,
+            userId: null
         };
 
         // Генератор кодов
@@ -211,40 +212,35 @@
 
         // Инициализация
         function initGame() {
-            if (!gameState.referralCode) {
-                gameState.referralCode = generateReferralCode();
+            // Получаем ID пользователя
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                gameState.userId = tg.initDataUnsafe.user.id.toString();
+            } else {
+                // Для локального тестирования
+                gameState.userId = 'local_' + Math.random().toString(36).substr(2, 9);
             }
 
-            // Обработка реферала
-            if (tg.initDataUnsafe?.start_param) {
-                handleReferral(tg.initDataUnsafe.start_param);
+            // Загружаем прогресс
+            loadProgress();
+
+            // Генерируем реферальный код если его нет
+            if (!gameState.referralCode) {
+                gameState.referralCode = generateReferralCode();
+                saveProgress();
+            }
+
+            // Проверяем реферальный код из параметра start
+            if (tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+                const refCode = tg.initDataUnsafe.start_param;
+                if (refCode !== gameState.referralCode && !gameState.hasReferralBonus) {
+                    gameState.referredBy = refCode;
+                    applyReferralBonus();
+                }
             }
 
             updateReferralLink();
-            loadProgress();
             setupEventListeners();
             updateDisplay();
-        }
-
-        // Обработка реферала
-        function handleReferral(refCode) {
-            if (refCode !== gameState.referralCode) {
-                gameState.referredBy = refCode;
-                applyReferralBonus();
-                notifyReferrer(refCode);
-            }
-        }
-
-        // Уведомление пригласившего
-        function notifyReferrer(refCode) {
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    chat_id: refCode, // В реальном боте нужно связать код с ID
-                    text: `🎉 Новый реферал! Код: ${gameState.referralCode}`
-                })
-            }).catch(e => console.error('Ошибка уведомления:', e));
         }
 
         // Реферальные функции
@@ -261,12 +257,11 @@
         }
 
         function applyReferralBonus() {
-            if (!gameState.hasReferralBonus) {
-                gameState.bonusMultiplier = 3;
-                gameState.hasReferralBonus = true;
-                document.getElementById('referralStatus').textContent = '✅ Вы получили x3 множитель!';
-                saveProgress();
-            }
+            gameState.bonusMultiplier = 3;
+            gameState.hasReferralBonus = true;
+            document.getElementById('referralStatus').textContent = '✅ Вы получили x3 множитель!';
+            saveProgress();
+            updateDisplay();
         }
 
         // Игровой процесс
@@ -324,7 +319,6 @@
             document.getElementById('clickMultiplierLevel').textContent = `Уровень: ${gameState.clickMultiplierLevel}`;
             document.getElementById('megaClickerLevel').textContent = `Уровень: ${gameState.megaClickerLevel}`;
             
-            // Обновление цен с учетом новой формулы
             document.getElementById('buyAutoClicker').textContent = `Цена: ${270 + (gameState.autoClickerLevel * 200)}`;
             document.getElementById('buyClickMultiplier').textContent = `Цена: ${320 + (gameState.clickMultiplierLevel * 200)}`;
             document.getElementById('buyMegaClicker').textContent = `Цена: ${470 + (gameState.megaClickerLevel * 200)}`;
@@ -343,13 +337,19 @@
 
         // Сохранение/загрузка
         function saveProgress() {
-            localStorage.setItem(`skurcoin_${gameState.referralCode}`, JSON.stringify(gameState));
+            if (!gameState.userId) return;
+            const saveKey = `skurcoin_${gameState.userId}`;
+            localStorage.setItem(saveKey, JSON.stringify(gameState));
         }
 
         function loadProgress() {
-            const saved = localStorage.getItem(`skurcoin_${gameState.referralCode}`);
+            if (!gameState.userId) return;
+            const saveKey = `skurcoin_${gameState.userId}`;
+            const saved = localStorage.getItem(saveKey);
             if (saved) {
-                Object.assign(gameState, JSON.parse(saved));
+                const parsed = JSON.parse(saved);
+                Object.assign(gameState, parsed);
+                
                 if (gameState.hasReferralBonus) {
                     document.getElementById('referralStatus').textContent = '✅ У вас есть x3 множитель';
                 }
