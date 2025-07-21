@@ -80,6 +80,24 @@
             padding: 5px;
         }
         
+        .info-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .rebirth-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
         h1 {
             font-size: 1.8rem;
             font-weight: 900;
@@ -127,8 +145,8 @@
         }
         
         .clicker-container {
-            width: 180px;
-            height: 180px;
+            width: 220px; /* Увеличена ширина */
+            height: 220px; /* Увеличена высота */
             margin: 0 auto 20px;
             position: relative;
             animation: float 3s ease-in-out infinite;
@@ -152,11 +170,11 @@
             align-items: center;
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.5rem; /* Увеличен шрифт */
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             border: none;
-            background-image: url('https://i.ibb.co/nMW8JFSf/Untitled36-20250721002408.png');
+            background-image: url('https://i.ibb.co/S7ZJcBQB/Untitled36-20250719163136.png');
             background-size: cover;
             background-position: center;
         }
@@ -508,37 +526,6 @@
             transform: scale(0.98);
         }
         
-        .rebirth-status {
-            color: var(--warning);
-            font-weight: 500;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .rebirth-btn-top {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            background: linear-gradient(to right, var(--warning), var(--danger));
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 3px 10px rgba(253, 203, 110, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            z-index: 5;
-        }
-        
-        .rebirth-btn-top img {
-            width: 16px;
-            height: 16px;
-        }
-        
         .settings-modal {
             position: fixed;
             top: 0;
@@ -694,6 +681,79 @@
             width: 100%;
         }
         
+        .info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .info-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .info-content {
+            background: var(--dark);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .close-info {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .info-text {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+        
+        .info-text ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-text li {
+            margin-bottom: 8px;
+        }
+        
+        .info-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
         /* Анимации */
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -749,8 +809,8 @@
         /* Адаптивность */
         @media (max-width: 480px) {
             .clicker-container {
-                width: 150px;
-                height: 150px;
+                width: 180px;
+                height: 180px;
             }
             
             .coin-display {
@@ -766,9 +826,8 @@
                 font-size: 0.9rem;
             }
             
-            .rebirth-btn-top {
-                padding: 6px 10px;
-                font-size: 0.8rem;
+            h1 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -777,15 +836,13 @@
     <div class="particles" id="particles"></div>
     <div class="container">
         <div class="header">
-            <button class="settings-btn" id="settingsBtn">⚙️</button>
+            <div>
+                <button class="settings-btn" id="settingsBtn">⚙️</button>
+                <button class="rebirth-btn" id="rebirthBtn">🔥</button>
+            </div>
             <h1>🔥 SKURCOIN Кликер 🔥</h1>
-            <div style="width: 40px;"></div> <!-- Для выравнивания -->
+            <button class="info-btn" id="infoBtn">ℹ️</button>
         </div>
-        
-        <button class="rebirth-btn-top" id="rebirthBtnTop">
-            <img src="https://i.ibb.co/PvLjm2Nq/Untitled36-20250721004053.png" alt="Rebirth">
-            Перерождение
-        </button>
         
         <div class="balance-container">
             <div class="coin-display" id="coins">0 SKURCOIN</div>
@@ -1068,11 +1125,51 @@
         </div>
     </div>
 
+    <div class="info-modal" id="infoModal">
+        <div class="info-content">
+            <div class="info-header">
+                <h2 class="info-title">Информация об игре</h2>
+                <button class="close-info" id="closeInfo">×</button>
+            </div>
+            
+            <div class="info-text">
+                <p><strong>SKURCOIN Кликер</strong> - это инкрементальная игра, где вы зарабатываете монеты, кликая по кнопке и покупая улучшения.</p>
+                
+                <h3>Как играть:</h3>
+                <ul>
+                    <li>Кликайте по центральной кнопке, чтобы зарабатывать монеты</li>
+                    <li>Покупайте улучшения для увеличения дохода</li>
+                    <li>Разблокируйте новые типы улучшений</li>
+                    <li>Перерождайтесь (кнопка 🔥 вверху) для получения бонусов</li>
+                    <li>Приглашайте друзей за бонусы</li>
+                </ul>
+                
+                <h3>Типы улучшений:</h3>
+                <ul>
+                    <li><strong>Базовые</strong> - увеличивают доход от кликов и пассивный доход</li>
+                    <li><strong>Премиум</strong> - мощные улучшения за большие деньги</li>
+                    <li><strong>Недвижимость</strong> - открывает новые возможности</li>
+                    <li><strong>Бизнесы</strong> - обеспечивают высокий пассивный доход</li>
+                </ul>
+                
+                <h3>Что нового:</h3>
+                <ul>
+                    <li>Начальный экран с обучением</li>
+                    <li>Система перерождений (кнопка 🔥)</li>
+                    <li>Настройки игры (кнопка ⚙️)</li>
+                    <li>Информация об игре (кнопка ℹ️)</li>
+                </ul>
+                
+                <p>Подписывайтесь на наш канал: <a href="https://t.me/skurclickerchannel" class="info-link" target="_blank">@skurclickerchannel</a></p>
+            </div>
+        </div>
+    </div>
+
     <div class="welcome-modal" id="welcomeModal">
         <div class="welcome-content">
             <h2>Добро пожаловать в SKURCOIN Кликер!</h2>
-            <p>Кликай по кнопке, зарабатывай SKURCOIN и улучшай свой кликер!</p>
-            <p>Открывай новые улучшения, бизнесы и перерождайся для увеличения дохода.</p>
+            <p>Кликай по большой кнопке, зарабатывай SKURCOIN и улучшай свой кликер!</p>
+            <p>Открывай новые улучшения, бизнесы и перерождайся (кнопка 🔥) для увеличения дохода.</p>
             <p>Подписывайся на наш канал: <a href="https://t.me/skurclickerchannel" target="_blank">@skurclickerchannel</a></p>
             <p>Приглашай друзей и получай бонусы!</p>
             <button id="closeWelcome">Начать игру!</button>
@@ -1497,8 +1594,8 @@
             document.getElementById('buySpaceCompany').addEventListener('click', () =>
                 buyUpgrade('spaceCompany', 1000000000, 500000000));
             
-            // Кнопка перерождения сверху
-            document.getElementById('rebirthBtnTop').addEventListener('click', () => {
+            // Кнопка перерождения
+            document.getElementById('rebirthBtn').addEventListener('click', () => {
                 showRebirthModal();
             });
             
@@ -1509,6 +1606,15 @@
             
             document.getElementById('closeSettings').addEventListener('click', () => {
                 document.getElementById('settingsModal').classList.remove('active');
+            });
+            
+            // Информационная кнопка
+            document.getElementById('infoBtn').addEventListener('click', () => {
+                document.getElementById('infoModal').classList.add('active');
+            });
+            
+            document.getElementById('closeInfo').addEventListener('click', () => {
+                document.getElementById('infoModal').classList.remove('active');
             });
             
             document.getElementById('darkThemeBtn').addEventListener('click', () => {
@@ -1682,8 +1788,10 @@
                 const clicker = document.getElementById('clicker');
                 if (gameState.rebirths === 1) {
                     clicker.style.backgroundImage = "url('https://i.ibb.co/SwDmpvGW/Untitled36-20250721002702.png')";
-                } else {
+                } else if (gameState.rebirths >= 2) {
                     clicker.style.backgroundImage = "url('https://i.ibb.co/nMW8JFSf/Untitled36-20250721002408.png')";
+                } else {
+                    clicker.style.backgroundImage = "url('https://i.ibb.co/S7ZJcBQB/Untitled36-20250719163136.png')";
                 }
                 
                 // Скрываем улучшения
@@ -1898,10 +2006,12 @@
                     
                     // Обновляем изображение кликера в зависимости от уровня перерождения
                     const clicker = document.getElementById('clicker');
-                    if (gameState.rebirths >= 1) {
+                    if (gameState.rebirths === 1) {
                         clicker.style.backgroundImage = "url('https://i.ibb.co/SwDmpvGW/Untitled36-20250721002702.png')";
-                    } else {
+                    } else if (gameState.rebirths >= 2) {
                         clicker.style.backgroundImage = "url('https://i.ibb.co/nMW8JFSf/Untitled36-20250721002408.png')";
+                    } else {
+                        clicker.style.backgroundImage = "url('https://i.ibb.co/S7ZJcBQB/Untitled36-20250719163136.png')";
                     }
                     
                     // Показываем скрытые улучшения, если они были куплены
